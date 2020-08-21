@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class AnimationCallback : MonoBehaviour
 {
-    
+    public void AnimEnd()
+    {
+        gameObject.SetActive(false);
+    }
+
     public void Send(string msg)
     {
         SendMessage(msg);

@@ -52,7 +52,7 @@ public class UIManager : MonoBehaviour
     public StructTestObject TestObject;
 
 
-
+    public GameObject PlayerCanvas;
     public Image BioHazard;
 
     public GameObject GameOverFlagObject;

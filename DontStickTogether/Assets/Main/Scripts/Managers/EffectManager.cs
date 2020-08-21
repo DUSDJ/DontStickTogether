@@ -33,6 +33,8 @@ public class EffectManager : MonoBehaviour
     public Dictionary<string, List<GameObject>> List;
     public Dictionary<string, GameObject> DataDic;
 
+    public GameObject ClickEffect;
+    public List<GameObject> ClickEffectList;
 
     private void Awake()
     {
@@ -72,7 +74,51 @@ public class EffectManager : MonoBehaviour
             List.Add(item.Key, tempList);
         }
 
+        // 클릭이펙트는 특별취급
+        ClickEffectList = new List<GameObject>();
+        ClickEffect = Resources.Load<GameObject>("UI/MouseTouch_Custom");
+        
     }
+
+    #region ClickEffect Pooling
+
+    public void IncreaseClickPool(int num)
+    {
+        Debug.Log("IncreasePool() : " + gameObject.name);
+
+        for (int i = 0; i < num; i++)
+        {
+            GameObject go = Instantiate(ClickEffect);
+            go.transform.SetParent(UIManager.Instance.PlayerCanvas.transform, false);
+            ClickEffectList.Add(go);
+            go.SetActive(false);
+        }
+    }
+
+    public void SetClickPool(Vector3 position)
+    {
+        while (true)
+        {
+            for (int i = 0; i < ClickEffectList.Count; i++)
+            {
+                GameObject g = ClickEffectList[i];
+
+                if (g.gameObject.activeSelf == false)
+                {
+                    g.gameObject.SetActive(true);
+                    g.transform.position = new Vector2(position.x, position.y);
+                    g.GetComponent<Animation>().Play();
+
+                    return;
+                }
+
+            }
+
+            IncreaseClickPool(1);
+        }
+    }
+
+    #endregion
 
 
     #region Pooling

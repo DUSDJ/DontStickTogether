@@ -40,7 +40,7 @@ public class ScriptableLevel : ScriptableObject
     public struct StructSetFixedHuman
     {
         public EnumHuman Type;
-        [Range(0, 12)] public int BuildingIndex;
+        [Range(0, 9)] public int BuildingIndex;
         [Range(1.0f, 5.0f)]public float MoveSpeed;
     }
 }

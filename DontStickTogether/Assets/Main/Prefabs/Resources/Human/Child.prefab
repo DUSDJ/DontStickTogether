@@ -53,6 +53,7 @@ MonoBehaviour:
   AttackWithAnimation: 0
   AttackCoolDown: 1
   AttackPoint: 1
+  PushRate: 0.1
   Dragable: 0
   spr: {fileID: 0}
   anim: {fileID: 0}
@@ -199,7 +200,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.014129639, y: 0.000000029802322}
+  m_Offset: {x: -0.00038588047, y: 0.000000029802322}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -210,5 +211,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.30765104, y: 0.43481725}
+  m_Size: {x: 0.33668208, y: 0.43481725}
   m_EdgeRadius: 0

@@ -84,11 +84,11 @@ public class InputManager : MonoBehaviour
 
             if(t.phase == TouchPhase.Began)
             {
-                Debug.Log("Touch " + i + " Began");
-
                 Vector2 pos = GetTouchPosition(t);
 
-                Debug.Log("Pos : " + pos);
+                // Effect : 마우스클릭 이펙트
+                EffectManager.Instance.SetClickPool(pos);
+
 
                 LayerMask targetLayer = 1 << LayerMask.NameToLayer("Touchable");
                 Collider2D c = Physics2D.OverlapCircle(pos, TouchRadius, targetLayer);
@@ -102,18 +102,13 @@ public class InputManager : MonoBehaviour
             }
             else if (t.phase == TouchPhase.Moved)
             {
-                Debug.Log("Touch " + i + " Moved : " + GetTouchPosition(t));
-
-
                 if (TouchDic.ContainsKey(t.fingerId) && TouchDic[t.fingerId] != null){
                     TouchDic[t.fingerId].SendMessageUpwards("TouchMove", t);
-                }
+                }                
 
             }
             else if (t.phase == TouchPhase.Ended)
             {
-                Debug.Log("Touch " + i + " Ended");
-
                 if (TouchDic.ContainsKey(t.fingerId))
                 {
                     TouchDic[t.fingerId].SendMessageUpwards("TouchEnded", t);

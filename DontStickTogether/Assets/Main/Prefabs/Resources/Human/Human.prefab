@@ -110,6 +110,7 @@ MonoBehaviour:
   AttackWithAnimation: 0
   AttackCoolDown: 1
   AttackPoint: 1
+  PushRate: 0.1
   Dragable: 0
   spr: {fileID: 0}
   anim: {fileID: 0}

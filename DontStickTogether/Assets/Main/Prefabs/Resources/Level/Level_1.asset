@@ -37,12 +37,30 @@ MonoBehaviour:
       BuildingIndex: 7
       MoveSpeed: 2
     - Type: 1
-      BuildingIndex: 10
+      BuildingIndex: 9
       MoveSpeed: 1
   - Data: []
   - Data: []
+  - Data:
+    - Type: 1
+      BuildingIndex: 8
+      MoveSpeed: 1
+    - Type: 0
+      BuildingIndex: 4
+      MoveSpeed: 1
   - Data: []
-  - Data: []
-  - Data: []
-  - Data: []
-  - Data: []
+  - Data:
+    - Type: 0
+      BuildingIndex: 0
+      MoveSpeed: 1
+  - Data:
+    - Type: 1
+      BuildingIndex: 0
+      MoveSpeed: 1
+    - Type: 0
+      BuildingIndex: 0
+      MoveSpeed: 1
+  - Data:
+    - Type: 0
+      BuildingIndex: 0
+      MoveSpeed: 1

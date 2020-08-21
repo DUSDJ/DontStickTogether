@@ -22,6 +22,9 @@ public class Human : MonoBehaviour, IPointerUpHandler, IPointerDownHandler, ITou
     [Header("공격력(오염증가량)")]
     public float AttackPoint = 1.0f;
 
+    [Header("얼마나 멀리 던져지는지(이동거리 비례 추가량)")]
+    public float PushRate = 0.1f;
+
     [HideInInspector]
     public bool Dragable;
 
@@ -108,6 +111,14 @@ public class Human : MonoBehaviour, IPointerUpHandler, IPointerDownHandler, ITou
         transform.position = position;
 
         MoveSpeed = speed;
+
+        /*
+         * 애니메이션 속도
+         * 1 = 1
+         * 5 = 3
+         */
+
+        anim.speed = 0.5f + (speed * 0.5f);
 
         ChangeState(HumanState.HumanStateIdle);
     }
