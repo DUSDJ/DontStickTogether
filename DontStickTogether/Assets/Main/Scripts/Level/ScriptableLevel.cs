@@ -19,9 +19,8 @@ public class ScriptableLevel : ScriptableObject
         public float MinTime;
         public float MaxTime;
 
-        
-
         [Range(1.0f, 5.0f)]public float Speed;
+        [Range(1.0f, 5.0f)] public float AttackPoint;
     }
 
     [Header("자동 레벨 디자인 방식")]
@@ -44,5 +43,7 @@ public class ScriptableLevel : ScriptableObject
         public EnumHuman Type;
         [Range(0, 9)] public int BuildingIndex;
         [Range(1.0f, 5.0f)]public float MoveSpeed;
+        [Range(1.0f, 5.0f)] public float AttackPoint;
+
     }
 }

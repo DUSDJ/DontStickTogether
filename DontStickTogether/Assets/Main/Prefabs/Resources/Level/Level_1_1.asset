@@ -18,50 +18,63 @@ MonoBehaviour:
     MinTime: 5
     MaxTime: 10
     Speed: 1
+    AttackPoint: 0
   FixedHuman:
   - Data:
     - Type: 0
       BuildingIndex: 0
       MoveSpeed: 1
+      AttackPoint: 1
   - Data:
     - Type: 1
       BuildingIndex: 7
       MoveSpeed: 1
+      AttackPoint: 1
     - Type: 0
       BuildingIndex: 9
       MoveSpeed: 1
+      AttackPoint: 1
     - Type: 1
       BuildingIndex: 3
       MoveSpeed: 1
+      AttackPoint: 0
   - Data:
     - Type: 1
       BuildingIndex: 7
       MoveSpeed: 2
+      AttackPoint: 1
     - Type: 1
       BuildingIndex: 9
       MoveSpeed: 1
+      AttackPoint: 1
   - Data: []
   - Data: []
   - Data:
     - Type: 1
       BuildingIndex: 8
       MoveSpeed: 1
+      AttackPoint: 1
     - Type: 0
       BuildingIndex: 4
       MoveSpeed: 1
+      AttackPoint: 1
   - Data: []
   - Data:
     - Type: 0
       BuildingIndex: 0
       MoveSpeed: 1
+      AttackPoint: 0
   - Data:
     - Type: 1
       BuildingIndex: 0
       MoveSpeed: 1
+      AttackPoint: 0
     - Type: 0
       BuildingIndex: 0
       MoveSpeed: 1
+      AttackPoint: 0
   - Data:
     - Type: 0
       BuildingIndex: 0
       MoveSpeed: 1
+      AttackPoint: 0

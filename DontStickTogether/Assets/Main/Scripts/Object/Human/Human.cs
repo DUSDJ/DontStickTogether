@@ -103,6 +103,37 @@ public class Human : MonoBehaviour, IPointerUpHandler, IPointerDownHandler, ITou
 
     }
 
+    public virtual void InitHuman(Vector3 position, float speed, float attackPoint)
+    {
+        Dragable = true;
+
+        transform.position = position;
+
+        if (speed < 1)
+        {
+            speed = 1;
+        }
+
+        if(attackPoint < 1)
+        {
+            attackPoint = 1;
+        }
+
+        MoveSpeed = speed;
+
+        AttackPoint = attackPoint;
+        
+
+        /*
+         * 애니메이션 속도
+         * 1 = 1
+         * 5 = 3
+         */
+
+        anim.speed = 0.5f + (speed * 0.5f);
+
+        ChangeState(HumanState.HumanStateIdle);
+    }
 
     public virtual void InitHuman(Vector3 position, float speed)
     {

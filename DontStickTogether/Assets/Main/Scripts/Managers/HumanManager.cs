@@ -189,7 +189,7 @@ public class HumanManager : MonoBehaviour
                 SpawnTime = UnityEngine.Random.Range(set.MinTime, set.MaxTime);
                 int BuildingIndex = UnityEngine.Random.Range(0, Buildings.Length-1);
 
-                SetPool(set.Type, set.Speed, BuildingIndex);
+                SetPool(set.Type, set.Speed, set.AttackPoint, BuildingIndex);
             }
 
             yield return null;
@@ -220,8 +220,9 @@ public class HumanManager : MonoBehaviour
                 EnumHuman eh = datas[i].Type;
                 int buildingIndex = datas[i].BuildingIndex;
                 float speed = datas[i].MoveSpeed;
+                float attackPoint = datas[i].AttackPoint;
 
-                SetPool(eh, speed, buildingIndex);
+                SetPool(eh, speed, attackPoint, buildingIndex);
             }
         }
 
@@ -253,8 +254,9 @@ public class HumanManager : MonoBehaviour
                         EnumHuman eh = datas[i].Type;
                         int buildingIndex = datas[i].BuildingIndex;
                         float speed = datas[i].MoveSpeed;
+                        float attackPoint = datas[i].AttackPoint;
 
-                        SetPool(eh, speed, buildingIndex);
+                        SetPool(eh, speed, attackPoint, buildingIndex);
                     }
                 }
             }
@@ -304,6 +306,14 @@ public class HumanManager : MonoBehaviour
         return true;
     }
 
+    public void SetPool(EnumHuman eh, float speed, float attackPoint, int buildingIndex)
+    {
+        // enum to string (key)
+        string key = Enum.GetName(typeof(EnumHuman), eh);
+
+        SetPool(key, speed, attackPoint, buildingIndex);
+    }
+
     public void SetPool(EnumHuman eh, float speed, int buildingIndex)
     {
         // enum to string (key)
@@ -319,6 +329,39 @@ public class HumanManager : MonoBehaviour
 
         SetPool(key, buildingIndex);
     }
+
+    public void SetPool(string key, float speed, float attackPoint, int buildingIndex)
+    {
+        if (DataDic.ContainsKey(key) == false)
+        {
+            Debug.LogWarning("없는 이름으로 Human 생성 : " + key);
+            return;
+        }
+
+        while (true)
+        {
+            for (int i = 0; i < List[key].Count; i++)
+            {
+                Human h = List[key][i].GetComponent<Human>();
+
+                if (h.gameObject.activeSelf == false)
+                {
+                    h.gameObject.SetActive(true);
+
+                    //h.InitHuman(GetCreationPoint(), speed);
+                    h.InitHuman(Buildings[buildingIndex].position, speed, attackPoint);
+
+                    return;
+                }
+            }
+
+            if (IncreasePool(key, 1) == false)
+            {
+                return;
+            }
+        }
+    }
+
 
     public void SetPool(string key, float speed, int buildingIndex)
     {
