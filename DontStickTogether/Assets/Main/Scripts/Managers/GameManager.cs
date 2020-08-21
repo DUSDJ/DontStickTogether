@@ -35,6 +35,31 @@ public class GameManager : MonoBehaviour
     [Header("시작 대기 시간")]
     public int StartTime;
 
+    private float clearTime = 10f;
+    public float ClearTime
+    {
+        get
+        {
+            return clearTime;
+        }
+        set
+        {
+            if(value <= 0)
+            {
+                value = 0;
+                clearTime = value;
+                UIManager.Instance.FlagUpdate(clearTime);
+
+                GameClear();
+            }
+            else
+            {
+                clearTime = value;
+                UIManager.Instance.FlagUpdate(clearTime);
+            }
+        }
+    }
+
     [Header("오염 최대치")]
     public float MaxBioHazard = 100f;
 
@@ -91,6 +116,7 @@ public class GameManager : MonoBehaviour
     #region Coroutines
 
     IEnumerator StartingCoroutine;
+    IEnumerator MainCoroutine;
 
     #endregion
 
@@ -117,9 +143,6 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         GameInIt();
-        StartLevel();
-
-
     }
     
     
@@ -130,7 +153,6 @@ public class GameManager : MonoBehaviour
 
         /* GameOver Flag UI Set */
         UIManager.Instance.FlagSet(true);
-        UIManager.Instance.FlagUpdate();
 
         /* Timer UI Set*/
         UIManager.Instance.StartTimerSet(true);
@@ -156,8 +178,26 @@ public class GameManager : MonoBehaviour
 
         HumanManager.Instance.StartSpawn();
         SoundManager.Instance.StartMainBGM();
+
+        
+        if (MainCoroutine != null)
+        {
+            StopCoroutine(MainCoroutine);            
+        }
+        MainCoroutine = MainTimerCoroutine();
+        StartCoroutine(MainCoroutine);
+        
     }
 
+    IEnumerator MainTimerCoroutine()
+    {
+        while (true)
+        {
+            ClearTime -= Time.deltaTime;
+
+            yield return null;
+        }
+    }
 
     public void AddHuman(Human h)
     {
@@ -168,9 +208,6 @@ public class GameManager : MonoBehaviour
 
         HumansInCircle += 1;
 
-        // UI Update
-
-        UIManager.Instance.FlagUpdate();
     }
 
     public void RemoveHuman(Human h)
@@ -181,16 +218,32 @@ public class GameManager : MonoBehaviour
         // Count Add
         HumansInCircle -= 1;
 
-        // UI Update
-        UIManager.Instance.FlagUpdate();
     }
 
     #region GameState Management
 
     public void GameInIt()
     {
+        UIManager.Instance.GameClear(false);
+
         NowBioHazard = 0;
+
+        ScriptableLevel sl = LevelManager.Instance.GetLevel();
+
+        if(sl == null)
+        {
+            Debug.LogWarning("모든 레벨이 클리어됨. 다음 레벨이 없음.");
+            return;
+        }
+
+        ClearTime = sl.ClearTime;
+
+        if(ClearTime <= 0)
+        {
+            ClearTime = 30.0f;
+        }
         
+        StartLevel();
     }
 
     public void StartLevel()
@@ -203,10 +256,36 @@ public class GameManager : MonoBehaviour
         StartCoroutine(StartingCoroutine);
     }
 
-    public void GameOver()
+    public void GameClean()
     {
+        if(StartingCoroutine != null)
+        {
+            StopCoroutine(StartingCoroutine);
+        }
+        if(MainCoroutine != null)
+        {
+            StopCoroutine(MainCoroutine);
+        }
+
         HumanManager.Instance.StopSpawn();
         HumanManager.Instance.CleanHuman();
+    }
+
+    public void GameClear()
+    {
+        GameClean();
+
+        // 클리어 연출부
+        UIManager.Instance.GameClear(true);
+
+        LevelManager.Instance.NowLevel += 1;
+
+        GameInIt();
+    }
+
+    public void GameOver()
+    {
+        GameClean();
 
         UIManager.Instance.GameOver(true);
     }

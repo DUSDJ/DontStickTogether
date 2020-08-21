@@ -55,13 +55,20 @@ public class UIManager : MonoBehaviour
     public GameObject PlayerCanvas;
     public Image BioHazard;
 
-    public GameObject GameOverFlagObject;
-    public TextMeshProUGUI GameOverFlagText;
+    public GameObject GameClearFlagObject;
+    public TextMeshProUGUI GameClearFlagText;
 
+    public GameObject GameClearObject;
     public GameObject GameOverObject;
 
     #endregion
 
+
+    #region Coroutines
+
+    public IEnumerator GameClearCoroutine;
+
+    #endregion
 
 
 
@@ -82,6 +89,48 @@ public class UIManager : MonoBehaviour
 
 
         GameOverObject.SetActive(false);
+    }
+
+    
+
+    public void GameClear(bool OnOff)
+    {
+        if (OnOff == true)
+        {
+            // GameClear 등장 연출부
+            //
+
+            if(GameClearCoroutine != null)
+            {
+                StopCoroutine(GameClearCoroutine);
+            }
+            GameClearCoroutine = GameClearUpdate(2.0f);
+            StartCoroutine(GameClearCoroutine);
+        }
+        else
+        {
+            // GameClear 소멸 연출부
+            //
+
+            if (GameClearCoroutine != null)
+            {
+                StopCoroutine(GameClearCoroutine);
+            }
+            GameClearObject.SetActive(false);
+        }
+    }
+
+    IEnumerator GameClearUpdate(float duration)
+    {
+        float t = 0;
+        while(t < duration)
+        {
+            t += Time.deltaTime;
+
+            yield return null;
+        }
+
+        GameClearObject.SetActive(false);
     }
 
 
@@ -133,25 +182,23 @@ public class UIManager : MonoBehaviour
     {
         if (OnOff == true)
         {
-            // Starting Timer 등장 연출부
+            // Main Timer 등장 연출부
             //
 
-            GameOverFlagObject.SetActive(true);
+            GameClearFlagObject.SetActive(true);
         }
         else
         {
-            // Starting Timer 소멸 연출부
+            // Main Timer 소멸 연출부
             //
 
-            GameOverFlagObject.SetActive(false);
+            GameClearFlagObject.SetActive(false);
         }
     }
 
-    public void FlagUpdate()
-    {
-        int count = GameManager.Instance.HumansInCircle;
-
-        GameOverFlagText.text = string.Format(" {0} in Circle ", count);
+    public void FlagUpdate(float leftTime)
+    {        
+        GameClearFlagText.text = string.Format("{0:F2}", leftTime);
     }
 
     public void UpdateHumanCount(int value)

@@ -291,6 +291,9 @@ public class HumanManager : MonoBehaviour
         for (int i = 0; i < num; i++)
         {
             GameObject go = Instantiate(DataDic[key]);
+            // sorting order
+            go.GetComponent<SpriteRenderer>().sortingOrder = ObjectCount;
+
             List[key].Add(go);
             go.SetActive(false);
 

@@ -7,6 +7,8 @@ using UnityEditor;
 public class ScriptableLevel : ScriptableObject
 {
 
+    [Header("버텨야 하는 시간(초)")]
+    public float ClearTime;
 
     /* 컨셉1 : 매 레벨마다 유닛별 생성 시간만 설정*/
     
