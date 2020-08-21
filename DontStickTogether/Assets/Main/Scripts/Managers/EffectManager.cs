@@ -33,8 +33,11 @@ public class EffectManager : MonoBehaviour
     public Dictionary<string, List<GameObject>> List;
     public Dictionary<string, GameObject> DataDic;
 
-    public GameObject ClickEffect;
-    public List<GameObject> ClickEffectList;
+    [HideInInspector]public GameObject ClickEffect;
+    [HideInInspector]public List<GameObject> ClickEffectList;
+
+    [HideInInspector]public GameObject TrailEffect;
+    [HideInInspector]public List<GameObject> TrailEffectList;
 
     private void Awake()
     {
@@ -52,7 +55,6 @@ public class EffectManager : MonoBehaviour
         #endregion
 
 
-        
         DataDic = new Dictionary<string, GameObject>();
 
         GameObject[] datas = Resources.LoadAll<GameObject>("Effect/");
@@ -77,8 +79,50 @@ public class EffectManager : MonoBehaviour
         // 클릭이펙트는 특별취급
         ClickEffectList = new List<GameObject>();
         ClickEffect = Resources.Load<GameObject>("UI/MouseTouch_Custom");
-        
+
+
+        // 트레일 이펙트도 특별취급
+        TrailEffectList = new List<GameObject>();
+        TrailEffect = Resources.Load<GameObject>("UI/Trail_Custom");
     }
+
+
+    #region TrailEffect Pooling
+
+    public void IncreaseTrailPool(int num)
+    {
+        Debug.Log("IncreasePool() : " + gameObject.name);
+
+        for (int i = 0; i < num; i++)
+        {
+            GameObject go = Instantiate(TrailEffect);
+            TrailEffectList.Add(go);
+            go.SetActive(false);
+        }
+    }
+
+    public Transform SetTrailPool()
+    {
+        while (true)
+        {
+            for (int i = 0; i < TrailEffectList.Count; i++)
+            {
+                GameObject g = TrailEffectList[i];
+
+                if (g.gameObject.activeSelf == false)
+                {
+                    g.gameObject.SetActive(true);
+
+                    return g.transform;
+                }
+
+            }
+
+            IncreaseTrailPool(1);
+        }
+    }
+
+    #endregion
 
     #region ClickEffect Pooling
 

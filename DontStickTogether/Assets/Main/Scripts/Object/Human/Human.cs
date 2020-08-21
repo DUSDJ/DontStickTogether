@@ -110,6 +110,11 @@ public class Human : MonoBehaviour, IPointerUpHandler, IPointerDownHandler, ITou
 
         transform.position = position;
 
+        if(speed < 1)
+        {
+            speed = 1;
+        }
+
         MoveSpeed = speed;
 
         /*
