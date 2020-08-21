@@ -142,6 +142,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        UIManager.Instance.GameClear(false);        
+
         GameInIt();
     }
     
@@ -224,8 +226,6 @@ public class GameManager : MonoBehaviour
 
     public void GameInIt()
     {
-        UIManager.Instance.GameClear(false);
-
         NowBioHazard = 0;
 
         ScriptableLevel sl = LevelManager.Instance.GetLevel();
