@@ -69,7 +69,15 @@ public class Center : MonoBehaviour
     {
         if (collision.CompareTag("Human"))
         {
-            GameManager.Instance.AddHuman(collision.GetComponent<Human>());
+            Human h = collision.GetComponent<Human>();
+            
+            // Drag 중이면 처리 안 함
+            if(h.NowState == h.HumanState.HumanStateDrag)
+            {
+                return;
+            }
+
+            GameManager.Instance.AddHuman(h);
         }
 
     }

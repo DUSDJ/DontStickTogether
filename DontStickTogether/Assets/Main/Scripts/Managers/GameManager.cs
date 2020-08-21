@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
 
     #region Values
 
+    [Header("시작 대기 시간")]
     public int StartTime;
 
     #endregion
@@ -42,7 +43,7 @@ public class GameManager : MonoBehaviour
     [Range(0, 30)]public int HumanInCircleLimit;
 
     private int humansInCircle;
-    private int HumansInCircle
+    public int HumansInCircle
     {
         get
         {
@@ -106,7 +107,13 @@ public class GameManager : MonoBehaviour
     {
         float t = 0;
 
+        /* GameOver Flag UI Set */
+        UIManager.Instance.FlagSet(true);
+        UIManager.Instance.FlagUpdate();
+
+        /* Timer UI Set*/
         UIManager.Instance.StartTimerSet(true);
+        UIManager.Instance.StartTimerUpdate(time);
 
         while (t < time)
         {
@@ -127,6 +134,7 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.StartTimerSet(false);
 
         HumanManager.Instance.StartSpawn();
+        SoundManager.Instance.StartMainBGM();
     }
 
 
@@ -138,6 +146,10 @@ public class GameManager : MonoBehaviour
         // Count Add
 
         HumansInCircle += 1;
+
+        // UI Update
+
+        UIManager.Instance.FlagUpdate();
     }
 
     public void GameOver()

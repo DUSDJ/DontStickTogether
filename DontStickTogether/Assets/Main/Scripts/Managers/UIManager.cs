@@ -50,6 +50,8 @@ public class UIManager : MonoBehaviour
     }
     public StructTestObject TestObject;
 
+    public GameObject GameOverFlagObject;
+    public TextMeshProUGUI GameOverFlagText;
 
     public GameObject GameOverObject;
 
@@ -122,6 +124,31 @@ public class UIManager : MonoBehaviour
         StartingObject.TimerText.text = value.ToString();
     }
 
+    public void FlagSet(bool OnOff)
+    {
+        if (OnOff == true)
+        {
+            // Starting Timer 등장 연출부
+            //
+
+            GameOverFlagObject.SetActive(true);
+        }
+        else
+        {
+            // Starting Timer 소멸 연출부
+            //
+
+            GameOverFlagObject.SetActive(false);
+        }
+    }
+
+    public void FlagUpdate()
+    {
+        int count = GameManager.Instance.HumansInCircle;
+        int max = GameManager.Instance.HumanInCircleLimit;
+
+        GameOverFlagText.text = string.Format(" {0} / {1}", count, max);
+    }
 
     public void UpdateHumanCount(int value)
     {

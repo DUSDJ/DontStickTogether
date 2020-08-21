@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Human : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
+public class Human : MonoBehaviour, IPointerUpHandler, IPointerDownHandler, ITouchable
 {
 
     #region Values
@@ -15,6 +15,8 @@ public class Human : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
 
     [HideInInspector]
     public bool Dragable;
+
+    public Touch MyTouch;
 
     #endregion
 
@@ -127,16 +129,21 @@ public class Human : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
 
     public virtual void DragOn()
     {
-
+        SoundManager.Instance.SetPool("Pick");
     }
 
     public virtual void DragOff()
     {
-
+        SoundManager.Instance.SetPool("Pick");
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        if (InputManager.Instance.InputTest == false)
+        {
+            return;
+        }
+
         // Drag 불가능한 상태면 취소 : Dragable false
         if (Dragable == false)
         {
@@ -146,11 +153,16 @@ public class Human : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
         DragOn();
 
         ChangeState(HumanState.HumanStateDrag);
-
+        
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
+        if(InputManager.Instance.InputTest == false)
+        {
+            return;
+        }
+
         // Drag 중이 아니면 취소
         if (NowState != HumanState.HumanStateDrag)
         {
@@ -162,7 +174,48 @@ public class Human : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
 
         // IdleState로 전환
         ChangeState(HumanState.HumanStateIdle);
+        
+    }
 
+    public void TouchBegan(Touch t)
+    {
+        // Drag 불가능한 상태면 취소 : Dragable false
+        if (Dragable == false)
+        {
+            return;
+        }
+
+        MyTouch = t;
+
+        DragOn();
+
+        ChangeState(HumanState.HumanStateDrag);
+    }
+
+    public void TouchMove(Touch t)
+    {
+        MyTouch = t;
+    }
+
+    public void TouchEnded(Touch t)
+    {
+        // Drag 중이 아니면 취소
+        if (NowState != HumanState.HumanStateDrag)
+        {
+            return;
+        }
+
+        // 이 손가락이 아니면 취소
+        if(t.fingerId != MyTouch.fingerId)
+        {
+            return;
+        }
+
+        DragOff();
+
+
+        // IdleState로 전환
+        ChangeState(HumanState.HumanStateIdle);
     }
 
 

@@ -35,9 +35,20 @@ public class HumanStateDrag : IState<Human>
         {
             if (IsDragging == true)
             {                
-                Vector2 MousePosition = Input.mousePosition;
-                MousePosition = Camera.main.ScreenToWorldPoint(MousePosition);
-                parent.transform.position = MousePosition;
+                if(InputManager.Instance.InputTest == true)
+                {
+                    Vector2 MousePosition = Input.mousePosition;
+                    MousePosition = Camera.main.ScreenToWorldPoint(MousePosition);
+                    parent.transform.position = MousePosition;
+                }
+                else
+                {
+                    Vector2 pos = InputManager.Instance.GetTouchPosition(parent.MyTouch);
+
+                    Debug.Log("Pos : " + pos);
+
+                    parent.transform.position = pos;
+                }
             }
 
             yield return null;
