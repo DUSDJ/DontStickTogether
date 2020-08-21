@@ -70,6 +70,7 @@ GameObject:
   - component: {fileID: 6015461008064913326}
   - component: {fileID: 7499753398037805829}
   - component: {fileID: 906407514}
+  - component: {fileID: 880281976769779622}
   m_Layer: 2
   m_Name: Human
   m_TagString: Human
@@ -106,6 +107,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MoveSpeed: 1
   RightIsFlipTrue: 0
+  AttackWithAnimation: 0
+  AttackCoolDown: 1
+  AttackPoint: 1
   Dragable: 0
   spr: {fileID: 0}
   anim: {fileID: 0}
@@ -197,3 +201,15 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &880281976769779622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6015461008064913325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f818ec610ed6aa9499620d1cb67397b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

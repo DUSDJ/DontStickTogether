@@ -54,6 +54,8 @@ public class HumanManager : MonoBehaviour
 
     private int ObjectCount = 0;
 
+    public Transform[] Buildings;
+
     #endregion
 
     #region Coroutines
@@ -165,7 +167,7 @@ public class HumanManager : MonoBehaviour
 
 
     /// <summary>
-    /// 각 타입마다 생성기
+    /// 각 타입마다 생성기, 빌딩은 랜덤
     /// </summary>
     /// <param name="set"></param>
     /// <returns></returns>
@@ -185,8 +187,9 @@ public class HumanManager : MonoBehaviour
                 t -= SpawnTime;
 
                 SpawnTime = UnityEngine.Random.Range(set.MinTime, set.MaxTime);
+                int BuildingIndex = UnityEngine.Random.Range(0, Buildings.Length-1);
 
-                SetPool(set.Type, set.Speed);
+                SetPool(set.Type, set.Speed, BuildingIndex);
             }
 
             yield return null;
@@ -207,16 +210,20 @@ public class HumanManager : MonoBehaviour
 
         // 0초 생성
         ScriptableLevel sl = lm.GetLevel();
-        EnumHuman[] ehArray = sl.FixedHuman[fixedTime].Type;
 
-        if (ehArray.Length > 0)
+        ScriptableLevel.StructSetFixedHuman[] datas = sl.FixedHuman[fixedTime].Data;
+
+        if(datas.Length > 0)
         {
-            for (int i = 0; i < ehArray.Length; i++)
+            for (int i = 0; i < datas.Length; i++)
             {
-                SetPool(ehArray[i]);
+                EnumHuman eh = datas[i].Type;
+                int buildingIndex = datas[i].BuildingIndex;
+                float speed = datas[i].MoveSpeed;
+
+                SetPool(eh, speed, buildingIndex);
             }
         }
-
 
         while (true)
         {
@@ -234,14 +241,20 @@ public class HumanManager : MonoBehaviour
                     yield break;
                 }
 
-                // 해당 (초)에 설정된 모든 유닛 생성                
-                ehArray = sl.FixedHuman[fixedTime].Type;
+                // 1초 생성
+                sl = lm.GetLevel();
 
-                if(ehArray.Length > 0)
+                datas = sl.FixedHuman[fixedTime].Data;
+
+                if (datas.Length > 0)
                 {
-                    for (int i = 0; i < ehArray.Length; i++)
+                    for (int i = 0; i < datas.Length; i++)
                     {
-                        SetPool(ehArray[i]);
+                        EnumHuman eh = datas[i].Type;
+                        int buildingIndex = datas[i].BuildingIndex;
+                        float speed = datas[i].MoveSpeed;
+
+                        SetPool(eh, speed, buildingIndex);
                     }
                 }
             }
@@ -288,23 +301,23 @@ public class HumanManager : MonoBehaviour
         return true;
     }
 
-    public void SetPool(EnumHuman eh, float speed)
+    public void SetPool(EnumHuman eh, float speed, int buildingIndex)
     {
         // enum to string (key)
         string key = Enum.GetName(typeof(EnumHuman), eh);
 
-        SetPool(key, speed);
+        SetPool(key, speed, buildingIndex);
     }
 
-    public void SetPool(EnumHuman eh)
+    public void SetPool(EnumHuman eh, int buildingIndex)
     {
         // enum to string (key)
         string key = Enum.GetName(typeof(EnumHuman), eh);
 
-        SetPool(key);
+        SetPool(key, buildingIndex);
     }
 
-    public void SetPool(string key, float speed)
+    public void SetPool(string key, float speed, int buildingIndex)
     {
         if (DataDic.ContainsKey(key) == false)
         {
@@ -322,7 +335,8 @@ public class HumanManager : MonoBehaviour
                 {
                     h.gameObject.SetActive(true);
 
-                    h.InitHuman(GetCreationPoint(), speed);
+                    //h.InitHuman(GetCreationPoint(), speed);
+                    h.InitHuman(Buildings[buildingIndex].position, speed);
 
                     return;
                 }
@@ -335,7 +349,7 @@ public class HumanManager : MonoBehaviour
         }
     }
 
-    public void SetPool(string key)
+    public void SetPool(string key, int buildingIndex)
     {
         if (DataDic.ContainsKey(key) == false)
         {
@@ -353,7 +367,8 @@ public class HumanManager : MonoBehaviour
                 {
                     h.gameObject.SetActive(true);
 
-                    h.InitHuman(GetCreationPoint());
+                    //h.InitHuman(GetCreationPoint());
+                    h.InitHuman(Buildings[buildingIndex].position);
 
                     return;
                 }

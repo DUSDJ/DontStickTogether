@@ -11,18 +11,52 @@ public class HumanStateArrive : IState<Human>
     IEnumerator UpdateCoroutine()
     {
         // 연출부
+        // 임시로 Action Animation
+        foreach (AnimatorControllerParameter param in parent.anim.parameters)
+        {
+            if (param.name == "Idle")
+            {
+                parent.anim.ResetTrigger("Idle");
+            }
+        }
+        foreach (AnimatorControllerParameter param in parent.anim.parameters)
+        {
+            if (param.name == "Action")
+            {
+                parent.anim.SetTrigger("Action");
+            }
+        }
 
-        // 도착한 사람이 뭘 할지
 
-        yield return null;
+        // 컨셉 1 : 1초당 공격을 한다        
+        // 컨셉 2 : 애니메이션 콜백을 기다린다.(여기선 아무것도 안 함)
+        if (parent.AttackWithAnimation == false)
+        {
+            float t = 0;
+
+            while (true)
+            {
+                if (t >= parent.AttackCoolDown)
+                {
+                    parent.Attack();
+                    t -= parent.AttackCoolDown;
+                }
+                else
+                {
+                    t += Time.deltaTime;
+                }
+
+                yield return null;
+            }
+        }
+
+
     }
 
     public void EnterState(Human t)
     {
         parent = t;
         if (parent.gameObject.activeSelf == false) return;
-
-        parent.Dragable = false;
 
         coroutine = UpdateCoroutine();
         parent.StartCoroutine(coroutine);
@@ -31,5 +65,13 @@ public class HumanStateArrive : IState<Human>
     public void ExitState()
     {
         if (coroutine != null) parent.StopCoroutine(coroutine);
+
+        foreach (AnimatorControllerParameter param in parent.anim.parameters)
+        {
+            if (param.name == "Action")
+            {
+                parent.anim.ResetTrigger("Action");
+            }
+        }
     }
 }

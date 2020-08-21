@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -49,6 +50,10 @@ public class UIManager : MonoBehaviour
         public TextMeshProUGUI HumanInCircleCountText;
     }
     public StructTestObject TestObject;
+
+
+
+    public Image BioHazard;
 
     public GameObject GameOverFlagObject;
     public TextMeshProUGUI GameOverFlagText;
@@ -145,9 +150,8 @@ public class UIManager : MonoBehaviour
     public void FlagUpdate()
     {
         int count = GameManager.Instance.HumansInCircle;
-        int max = GameManager.Instance.HumanInCircleLimit;
 
-        GameOverFlagText.text = string.Format(" {0} / {1}", count, max);
+        GameOverFlagText.text = string.Format(" {0} in Circle ", count);
     }
 
     public void UpdateHumanCount(int value)
@@ -158,5 +162,13 @@ public class UIManager : MonoBehaviour
     public void UpdateHumanInCircleCount(int value)
     {
         TestObject.HumanInCircleCountText.text = string.Format("Obj In Circle : {0}", value);
+    }
+
+    public void UpdateBioHazard()
+    {
+        float max = GameManager.Instance.MaxBioHazard;
+        float now = GameManager.Instance.NowBioHazard;
+
+        BioHazard.fillAmount = (now / max);
     }
 }

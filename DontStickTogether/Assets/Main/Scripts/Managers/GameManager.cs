@@ -35,12 +35,39 @@ public class GameManager : MonoBehaviour
     [Header("시작 대기 시간")]
     public int StartTime;
 
+    [Header("오염 최대치")]
+    public float MaxBioHazard = 100f;
+
+    private float nowBioHazrad = 0f;
+    public float NowBioHazard
+    {
+        get
+        {
+            return nowBioHazrad;
+        }
+        set
+        {
+            if(value >= MaxBioHazard)
+            {
+                value = MaxBioHazard;
+                nowBioHazrad = value;
+                // UI Update
+                UIManager.Instance.UpdateBioHazard();
+                // Game Over
+                GameOver();
+            }
+
+            nowBioHazrad = value;
+            // UI Update
+            UIManager.Instance.UpdateBioHazard();
+
+            
+        }
+    }
+
     #endregion
 
     #region GameLogics
-
-    [Header("패배조건 시민 수")]
-    [Range(0, 30)]public int HumanInCircleLimit;
 
     private int humansInCircle;
     public int HumansInCircle
@@ -53,12 +80,6 @@ public class GameManager : MonoBehaviour
         {
             humansInCircle = value;
             UIManager.Instance.UpdateHumanInCircleCount(value);
-
-            if (value >= HumanInCircleLimit)
-            {
-                // Game Over
-                GameOver();
-            }
 
         }
     }
@@ -95,14 +116,14 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        if(StartingCoroutine != null)
-        {
-            StopCoroutine(StartingCoroutine);
-        }
-        StartingCoroutine = StartingTimer(StartTime);
-        StartCoroutine(StartingCoroutine);
+        GameInIt();
+        StartLevel();
+
+
     }
     
+    
+
     IEnumerator StartingTimer(int time)
     {
         float t = 0;
@@ -152,6 +173,36 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.FlagUpdate();
     }
 
+    public void RemoveHuman(Human h)
+    {
+        // IdleState 변환
+        h.ChangeState(h.HumanState.HumanStateIdle);
+
+        // Count Add
+        HumansInCircle -= 1;
+
+        // UI Update
+        UIManager.Instance.FlagUpdate();
+    }
+
+    #region GameState Management
+
+    public void GameInIt()
+    {
+        NowBioHazard = 0;
+        
+    }
+
+    public void StartLevel()
+    {
+        if (StartingCoroutine != null)
+        {
+            StopCoroutine(StartingCoroutine);
+        }
+        StartingCoroutine = StartingTimer(StartTime);
+        StartCoroutine(StartingCoroutine);
+    }
+
     public void GameOver()
     {
         HumanManager.Instance.StopSpawn();
@@ -159,4 +210,7 @@ public class GameManager : MonoBehaviour
 
         UIManager.Instance.GameOver(true);
     }
+    #endregion
+
+
 }

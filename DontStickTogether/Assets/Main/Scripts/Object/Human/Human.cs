@@ -13,6 +13,15 @@ public class Human : MonoBehaviour, IPointerUpHandler, IPointerDownHandler, ITou
     [Header("FlipX 참일때 오른쪽을 보는가?")]
     public bool RightIsFlipTrue;
 
+    [Header("애니메이션 기반 액션인지?")]
+    public bool AttackWithAnimation = false;
+
+    [Header("공격 쿨다운: 기본1초")]
+    public float AttackCoolDown = 1.0f;
+
+    [Header("공격력(오염증가량)")]
+    public float AttackPoint = 1.0f;
+
     [HideInInspector]
     public bool Dragable;
 
@@ -131,6 +140,16 @@ public class Human : MonoBehaviour, IPointerUpHandler, IPointerDownHandler, ITou
 
         return AccuratedTime;
     }
+
+
+    /// <summary>
+    /// ArriveState 또는 Animation Callback으로 호출
+    /// </summary>
+    public virtual void Attack()
+    {
+        // 기본 공격
+        GameManager.Instance.NowBioHazard += AttackPoint;
+    }   
 
     #endregion
 

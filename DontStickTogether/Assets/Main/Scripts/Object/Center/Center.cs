@@ -82,11 +82,50 @@ public class Center : MonoBehaviour
 
     }
 
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Human"))
+        {
+            Human h = collision.GetComponent<Human>();
+
+            // Drag 중이면 처리 안 함
+            if (h.NowState == h.HumanState.HumanStateDrag)
+            {
+                return;
+            }
+
+            // 안에 있는데 도착상태가 아닐때
+            if(h.NowState != h.HumanState.HumanStateArrive)
+            {
+                GameManager.Instance.AddHuman(h);
+            }
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        /* 만들고 보니까 Exit는 알 바가 아님... */
+        /*
+        if (collision.CompareTag("Human"))
+        {
+            Human h = collision.GetComponent<Human>();
+
+            // Drag 중일때만 처리?
+            if (h.NowState != h.HumanState.HumanStateDrag)
+            {
+                return;
+            }
+
+            GameManager.Instance.RemoveHuman(h);
+        }
+        */
+    }
+
     #endregion
 
 
     #region Actions
-    
+
     // Center가 State로 인해 행할 특수한 액션?
     public virtual void Action()
     {

@@ -17,6 +17,8 @@ public class ScriptableLevel : ScriptableObject
         public float MinTime;
         public float MaxTime;
 
+        
+
         [Range(1.0f, 5.0f)]public float Speed;
     }
 
@@ -29,8 +31,16 @@ public class ScriptableLevel : ScriptableObject
     [System.Serializable]
     public struct StructFixedHuman
     {
-        public EnumHuman[] Type;
+        public StructSetFixedHuman[] Data; // 누가 어디 생성될 것인지
     }
     [Header("고정 레벨 디자인 방식")]
     public StructFixedHuman[] FixedHuman; // Size가 곧 초 단위
+
+    [System.Serializable]
+    public struct StructSetFixedHuman
+    {
+        public EnumHuman Type;
+        [Range(0, 12)] public int BuildingIndex;
+        [Range(1.0f, 5.0f)]public float MoveSpeed;
+    }
 }

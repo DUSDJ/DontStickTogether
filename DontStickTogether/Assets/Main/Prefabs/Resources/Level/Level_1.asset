@@ -16,15 +16,33 @@ MonoBehaviour:
   - Type: 0
     MinTime: 5
     MaxTime: 10
-    Speed: 0
+    Speed: 1
   FixedHuman:
-  - Type: 00000000
-  - Type: 000000000000000000000000
-  - Type: 
-  - Type: 
-  - Type: 000000000000000000000000
-  - Type: 
-  - Type: 
-  - Type: 
-  - Type: 
-  - Type: 
+  - Data:
+    - Type: 0
+      BuildingIndex: 0
+      MoveSpeed: 1
+  - Data:
+    - Type: 1
+      BuildingIndex: 7
+      MoveSpeed: 1
+    - Type: 0
+      BuildingIndex: 9
+      MoveSpeed: 1
+    - Type: 1
+      BuildingIndex: 3
+      MoveSpeed: 1
+  - Data:
+    - Type: 1
+      BuildingIndex: 7
+      MoveSpeed: 2
+    - Type: 1
+      BuildingIndex: 10
+      MoveSpeed: 1
+  - Data: []
+  - Data: []
+  - Data: []
+  - Data: []
+  - Data: []
+  - Data: []
+  - Data: []
