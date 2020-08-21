@@ -92,6 +92,17 @@ public class Human : MonoBehaviour, IPointerUpHandler, IPointerDownHandler, ITou
     }
 
 
+    public virtual void InitHuman(Vector3 position, float speed)
+    {
+        Dragable = true;
+
+        transform.position = position;
+
+        MoveSpeed = speed;
+
+        ChangeState(HumanState.HumanStateIdle);
+    }
+
     public virtual void InitHuman(Vector3 position)
     {
         Dragable = true;

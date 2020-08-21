@@ -58,7 +58,11 @@ public class HumanManager : MonoBehaviour
 
     #region Coroutines
 
+    /* Single Spawn */
     IEnumerator coroutine;
+
+    /* Multi Spawn */
+    List<IEnumerator> coroutineList = new List<IEnumerator>();
 
     #endregion
 
@@ -100,16 +104,53 @@ public class HumanManager : MonoBehaviour
    
     }
 
+    
+    public void CoroutineListClear()
+    {
+        if(coroutineList.Count > 0)
+        {
+            for (int i = 0; i < coroutineList.Count; i++)
+            {
+                if (coroutineList[i] != null)
+                {
+                    StopCoroutine(coroutineList[i]);
+                }
+            }
+        }
+
+        coroutineList.Clear();
+    }
 
     public void StartSpawn()
     {
-        if(coroutine != null)
+        if (LevelManager.Instance.UseFixedLevel == false)
         {
-            StopCoroutine(coroutine);
+            /* 레벨디자인 컨셉 1 : 매 레벨마다 각 유닛 생성 시간만 설정*/
+            // 각 Set별 스폰을 멀티로 돌린다.
+            ScriptableLevel sl = LevelManager.Instance.GetLevel();
+
+            // 코루틴 Clean
+            CoroutineListClear();
+            for (int i = 0; i < sl.SetHuman.Length; i++)
+            {
+                IEnumerator c = MultipleSpawnCoroutine(sl.SetHuman[i]);
+                coroutineList.Add(c);
+                StartCoroutine(c);
+            }
+        }
+        else
+        {
+            /* 레벨디자인 컨셉 2 : 고정된 초에 고정된 유닛들이 나온다.*/
+            // Fixed스폰을 하나 돌린다.
+            if (coroutine != null)
+            {
+                StopCoroutine(coroutine);
+            }
+
+            coroutine = FixedSpawnCoroutine();
+            StartCoroutine(coroutine);
         }
 
-        coroutine = SpawnCoroutine();
-        StartCoroutine(coroutine);
     }
 
     public void StopSpawn()
@@ -118,16 +159,24 @@ public class HumanManager : MonoBehaviour
         {
             StopCoroutine(coroutine);
         }
+
+        CoroutineListClear();
     }
 
-    IEnumerator SpawnCoroutine()
+
+    /// <summary>
+    /// 각 타입마다 생성기
+    /// </summary>
+    /// <param name="set"></param>
+    /// <returns></returns>
+    IEnumerator MultipleSpawnCoroutine(ScriptableLevel.StructSetHuman set)
     {
         float t = 0;
-        float SpawnTime = UnityEngine.Random.Range(MinTime, MaxTime);
+        float SpawnTime = UnityEngine.Random.Range(set.MinTime, set.MaxTime);
 
         while (true)
         {
-            if(t < SpawnTime)
+            if (t < SpawnTime)
             {
                 t += Time.deltaTime;
             }
@@ -135,10 +184,9 @@ public class HumanManager : MonoBehaviour
             {
                 t -= SpawnTime;
 
-                SpawnTime = UnityEngine.Random.Range(MinTime, MaxTime);
+                SpawnTime = UnityEngine.Random.Range(set.MinTime, set.MaxTime);
 
-                // 레벨매니저가 없어서 일단은 아무거나 생성
-                SetPool("Human");
+                SetPool(set.Type, set.Speed);
             }
 
             yield return null;
@@ -146,7 +194,68 @@ public class HumanManager : MonoBehaviour
 
     }
 
-    
+    /// <summary>
+    /// 고정방식
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator FixedSpawnCoroutine()
+    {
+        LevelManager lm = LevelManager.Instance;
+
+        float t = 0;
+        int fixedTime = 0;
+
+        // 0초 생성
+        ScriptableLevel sl = lm.GetLevel();
+        EnumHuman[] ehArray = sl.FixedHuman[fixedTime].Type;
+
+        if (ehArray.Length > 0)
+        {
+            for (int i = 0; i < ehArray.Length; i++)
+            {
+                SetPool(ehArray[i]);
+            }
+        }
+
+
+        while (true)
+        {
+            // 1초마다 생성
+            if(t >= 1.0f)
+            {
+                fixedTime += 1;
+                t -= 1;
+
+                sl = lm.GetLevel();
+
+                // 설정된 레벨이 모드 끝난경우 : 코루틴 종료
+                if(fixedTime >= sl.FixedHuman.Length)
+                {
+                    yield break;
+                }
+
+                // 해당 (초)에 설정된 모든 유닛 생성                
+                ehArray = sl.FixedHuman[fixedTime].Type;
+
+                if(ehArray.Length > 0)
+                {
+                    for (int i = 0; i < ehArray.Length; i++)
+                    {
+                        SetPool(ehArray[i]);
+                    }
+                }
+            }
+            else
+            {
+                t += Time.deltaTime;
+            }
+
+            yield return null;
+        }
+
+    }
+
+
     public Vector3 GetCreationPoint()
     {
         var circle = UnityEngine.Random.insideUnitCircle.normalized* Radius;
@@ -179,6 +288,53 @@ public class HumanManager : MonoBehaviour
         return true;
     }
 
+    public void SetPool(EnumHuman eh, float speed)
+    {
+        // enum to string (key)
+        string key = Enum.GetName(typeof(EnumHuman), eh);
+
+        SetPool(key, speed);
+    }
+
+    public void SetPool(EnumHuman eh)
+    {
+        // enum to string (key)
+        string key = Enum.GetName(typeof(EnumHuman), eh);
+
+        SetPool(key);
+    }
+
+    public void SetPool(string key, float speed)
+    {
+        if (DataDic.ContainsKey(key) == false)
+        {
+            Debug.LogWarning("없는 이름으로 Human 생성 : " + key);
+            return;
+        }
+
+        while (true)
+        {
+            for (int i = 0; i < List[key].Count; i++)
+            {
+                Human h = List[key][i].GetComponent<Human>();
+
+                if (h.gameObject.activeSelf == false)
+                {
+                    h.gameObject.SetActive(true);
+
+                    h.InitHuman(GetCreationPoint(), speed);
+
+                    return;
+                }
+            }
+
+            if(IncreasePool(key, 1) == false)
+            {
+                return;
+            }
+        }
+    }
+
     public void SetPool(string key)
     {
         if (DataDic.ContainsKey(key) == false)
@@ -203,7 +359,7 @@ public class HumanManager : MonoBehaviour
                 }
             }
 
-            if(IncreasePool(key, 1) == false)
+            if (IncreasePool(key, 1) == false)
             {
                 return;
             }
