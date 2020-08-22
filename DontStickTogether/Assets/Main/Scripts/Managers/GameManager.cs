@@ -178,6 +178,7 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.StartTimerUpdate(Mathf.FloorToInt(0));
         UIManager.Instance.StartTimerSet(false);
 
+        
         HumanManager.Instance.StartSpawn();
         SoundManager.Instance.StartMainBGM();
 
@@ -242,12 +243,15 @@ public class GameManager : MonoBehaviour
         {
             ClearTime = 30.0f;
         }
-        
+
+        LevelManager.Instance.SetLevel();
+
         StartLevel();
     }
 
     public void StartLevel()
     {
+
         if (StartingCoroutine != null)
         {
             StopCoroutine(StartingCoroutine);
@@ -258,7 +262,10 @@ public class GameManager : MonoBehaviour
 
     public void GameClean()
     {
-        if(StartingCoroutine != null)
+        SoundManager.Instance.StopMainBGM();
+        SoundManager.Instance.StopGameOverBGM();
+
+        if (StartingCoroutine != null)
         {
             StopCoroutine(StartingCoroutine);
         }
@@ -267,8 +274,17 @@ public class GameManager : MonoBehaviour
             StopCoroutine(MainCoroutine);
         }
 
+        UIManager.Instance.GameOver(false);
+
         HumanManager.Instance.StopSpawn();
         HumanManager.Instance.CleanHuman();
+    }
+
+    public void GameRestart()
+    {
+        GameClean();
+
+        GameInIt();
     }
 
     public void GameClear()

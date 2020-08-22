@@ -10,6 +10,16 @@ public class ScriptableLevel : ScriptableObject
     [Header("버텨야 하는 시간(초)")]
     public float ClearTime;
 
+    [Header("가운데 프리팹")]
+    public EnumCenter Center;
+
+    [Header("건물 정보 : 공백시 빈 공간")]
+    public EnumBulding[] Builginds;
+
+    [Header("바닥")]
+    public EnumGround Ground;
+
+
     /* 컨셉1 : 매 레벨마다 유닛별 생성 시간만 설정*/
     
     [System.Serializable]

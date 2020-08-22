@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8555fbfcc8c767741b29ed0742ddb105, type: 3}
   m_Name: Level_1_1
   m_EditorClassIdentifier: 
-  ClearTime: 10
+  ClearTime: 30
+  Center: {fileID: 3951526996536891727, guid: e68f386eb29fc224085ca51a72fe950e, type: 3}
+  Builginds: []
   SetHuman:
   - Type: 0
     MinTime: 5
@@ -24,7 +26,7 @@ MonoBehaviour:
     - Type: 0
       BuildingIndex: 0
       MoveSpeed: 1
-      AttackPoint: 1
+      AttackPoint: 5
   - Data:
     - Type: 1
       BuildingIndex: 7
@@ -33,7 +35,7 @@ MonoBehaviour:
     - Type: 0
       BuildingIndex: 9
       MoveSpeed: 1
-      AttackPoint: 1
+      AttackPoint: 5
     - Type: 1
       BuildingIndex: 3
       MoveSpeed: 1

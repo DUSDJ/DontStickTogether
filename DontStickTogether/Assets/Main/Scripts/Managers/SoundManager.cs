@@ -146,10 +146,46 @@ public class SoundManager : MonoBehaviour
 
     public void StartMainBGM()
     {
-        if(MainAudio.isPlaying == false)
+        StopGameOverBGM();
+
+        if (MainAudio.isPlaying == false)
         {
+            MainAudio.clip = MainBGM;
             MainAudio.Play();
             MainAudio.loop = true;
+        }
+    }
+
+    public void StopMainBGM()
+    {
+        if (MainAudio.clip == MainBGM
+            && MainAudio.isPlaying == true)
+        {
+            MainAudio.Stop();            
+        }
+    }
+
+    public AudioClip MainBGM;
+    public AudioClip GameOverBGM;
+
+    public void StartGameOverBGM()
+    {
+        StopMainBGM();
+        
+        if (MainAudio.isPlaying == false)
+        {
+            MainAudio.clip = GameOverBGM;
+            MainAudio.Play();
+            MainAudio.loop = true;
+        }
+    }
+
+    public void StopGameOverBGM()
+    {
+        if (MainAudio.clip == GameOverBGM
+            && MainAudio.isPlaying == true)
+        {
+            MainAudio.Stop();
         }
     }
 

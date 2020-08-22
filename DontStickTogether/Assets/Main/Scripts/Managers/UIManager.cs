@@ -138,16 +138,19 @@ public class UIManager : MonoBehaviour
     {
         if (OnOff == true)
         {
-            // Starting Timer 등장 연출부
-            //
+            //  등장 연출부
 
+            SoundManager.Instance.StartGameOverBGM();
+
+            PlayerCanvas.SetActive(false);
             GameOverObject.SetActive(true);
         }
         else
         {
-            // Starting Timer 소멸 연출부
+            //  소멸 연출부
             //
 
+            PlayerCanvas.SetActive(true);
             GameOverObject.SetActive(false);
         }
         
