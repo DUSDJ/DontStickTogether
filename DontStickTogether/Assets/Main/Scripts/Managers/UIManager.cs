@@ -46,8 +46,9 @@ public class UIManager : MonoBehaviour
         [Header("테스트용 오브젝트 수 Text")]
         public TextMeshProUGUI HumanCountText;
 
-        [Header("테스트용 원 안의 사람 수 Text")]
-        public TextMeshProUGUI HumanInCircleCountText;
+        public TextMeshProUGUI ChapterText;
+        public TextMeshProUGUI StageText;
+
     }
     public StructTestObject TestObject;
 
@@ -209,16 +210,21 @@ public class UIManager : MonoBehaviour
         TestObject.HumanCountText.text = string.Format("Obj : {0}", value);
     }
 
-    public void UpdateHumanInCircleCount(int value)
-    {
-        TestObject.HumanInCircleCountText.text = string.Format("Obj In Circle : {0}", value);
-    }
-
     public void UpdateBioHazard()
     {
         float max = GameManager.Instance.MaxBioHazard;
         float now = GameManager.Instance.NowBioHazard;
 
         BioHazard.fillAmount = (now / max);
+    }
+
+    public void UpdateChapter(int value)
+    {
+        TestObject.ChapterText.text = string.Format("Chpater :{0}", value);
+    }
+
+    public void UpdateStage(int value)
+    {
+        TestObject.StageText.text = string.Format("Stage :{0}", value);
     }
 }

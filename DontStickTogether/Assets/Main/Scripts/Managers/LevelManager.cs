@@ -29,9 +29,6 @@ public class LevelManager : MonoBehaviour
 
     #endregion
 
-    [Header("고정레벨을 사용할 것인지?")]
-    public bool UseFixedLevel = false;
-
     [HideInInspector]
     public ScriptableLevel[] Levels;
 
@@ -47,6 +44,12 @@ public class LevelManager : MonoBehaviour
     [HideInInspector] public SpriteRenderer Ground;
 
     #endregion
+
+    #region 
+
+    public List<Dictionary<string, object>> LevelTable;
+
+    #endregion 
 
 
     private void Awake()
@@ -64,8 +67,13 @@ public class LevelManager : MonoBehaviour
 
         #endregion
 
+
+        /* Level Data Init */
         ScriptableLevel[] datas = Resources.LoadAll<ScriptableLevel>("Level/");
         Levels = datas;
+
+        /* Level Data CSV Init */
+        LevelTable = CSVReader.Read("LevelCSV/LevelSheet");
 
         /* Center Data Init */
         CenterDic = new Dictionary<string, GameObject>();
@@ -164,10 +172,6 @@ public class LevelManager : MonoBehaviour
             }
 
         }
-        
-        
-
-
     }
 
 
@@ -182,5 +186,19 @@ public class LevelManager : MonoBehaviour
         return Levels[NowLevel - 1];
     }
 
-    
+
+    public Dictionary<string, object> GetLevelCSV()
+    {
+        // 레벨 초과
+        if (NowLevel > LevelTable.Count)
+        {
+            return null;
+        }
+
+        UIManager.Instance.UpdateChapter(int.Parse(LevelTable[NowLevel - 1]["Chapter"].ToString()));
+        UIManager.Instance.UpdateStage(int.Parse(LevelTable[NowLevel - 1]["Stage"].ToString()));
+
+        return LevelTable[NowLevel - 1];
+    }
+
 }

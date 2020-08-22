@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine;
+using UnityScript.Steps;
 
 public class GameManager : MonoBehaviour
 {
@@ -92,25 +93,6 @@ public class GameManager : MonoBehaviour
 
     #endregion
 
-    #region GameLogics
-
-    private int humansInCircle;
-    public int HumansInCircle
-    {
-        get
-        {
-            return humansInCircle;
-        }
-        set
-        {
-            humansInCircle = value;
-            UIManager.Instance.UpdateHumanInCircleCount(value);
-
-        }
-    }
-
-    #endregion
-
 
 
     #region Coroutines
@@ -146,8 +128,24 @@ public class GameManager : MonoBehaviour
 
         GameInIt();
     }
-    
-    
+
+    /// <summary>
+    /// 치트키
+    /// </summary>
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            GameClear();
+        }
+
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            MaxBioHazard = 100000;
+            NowBioHazard -= 10000;
+        }
+    }
+
 
     IEnumerator StartingTimer(int time)
     {
@@ -207,19 +205,12 @@ public class GameManager : MonoBehaviour
         // ArriveState 변환
         h.ChangeState(h.HumanState.HumanStateArrive);
 
-        // Count Add
-
-        HumansInCircle += 1;
-
     }
 
     public void RemoveHuman(Human h)
     {
         // IdleState 변환
         h.ChangeState(h.HumanState.HumanStateIdle);
-
-        // Count Add
-        HumansInCircle -= 1;
 
     }
 
@@ -229,25 +220,28 @@ public class GameManager : MonoBehaviour
     {
         NowBioHazard = 0;
 
-        ScriptableLevel sl = LevelManager.Instance.GetLevel();
+        Dictionary<string, object> levelData = LevelManager.Instance.GetLevelCSV();
 
-        if(sl == null)
+        if (levelData == null)
         {
             Debug.LogWarning("모든 레벨이 클리어됨. 다음 레벨이 없음.");
             return;
         }
 
-        ClearTime = sl.ClearTime;
-
-        if(ClearTime <= 0)
+        // Set Clear Time
+        ClearTime = float.Parse(levelData["ClearTime"].ToString());
+        if (ClearTime <= 0)
         {
             ClearTime = 30.0f;
         }
 
+        // Set Level Environments
         LevelManager.Instance.SetLevel();
+
 
         StartLevel();
     }
+
 
     public void StartLevel()
     {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading;
 using UnityEngine;
 
@@ -63,9 +64,6 @@ public class HumanManager : MonoBehaviour
     /* Single Spawn */
     IEnumerator coroutine;
 
-    /* Multi Spawn */
-    List<IEnumerator> coroutineList = new List<IEnumerator>();
-
     #endregion
 
 
@@ -107,51 +105,17 @@ public class HumanManager : MonoBehaviour
     }
 
     
-    public void CoroutineListClear()
-    {
-        if(coroutineList.Count > 0)
-        {
-            for (int i = 0; i < coroutineList.Count; i++)
-            {
-                if (coroutineList[i] != null)
-                {
-                    StopCoroutine(coroutineList[i]);
-                }
-            }
-        }
-
-        coroutineList.Clear();
-    }
-
     public void StartSpawn()
     {
-        if (LevelManager.Instance.UseFixedLevel == false)
-        {
-            /* 레벨디자인 컨셉 1 : 매 레벨마다 각 유닛 생성 시간만 설정*/
-            // 각 Set별 스폰을 멀티로 돌린다.
-            ScriptableLevel sl = LevelManager.Instance.GetLevel();
+        Dictionary<string, object> table = LevelManager.Instance.GetLevelCSV();
 
-            // 코루틴 Clean
-            CoroutineListClear();
-            for (int i = 0; i < sl.SetHuman.Length; i++)
-            {
-                IEnumerator c = MultipleSpawnCoroutine(sl.SetHuman[i]);
-                coroutineList.Add(c);
-                StartCoroutine(c);
-            }
-        }
-        else
+        if (coroutine != null)
         {
-            /* 레벨디자인 컨셉 2 : 고정된 초에 고정된 유닛들이 나온다.*/
-            // Fixed스폰을 하나 돌린다.
-            if (coroutine != null)
-            {
-                StopCoroutine(coroutine);
-            }
-
-            coroutine = FixedSpawnCoroutine();
-            StartCoroutine(coroutine);
+            StopCoroutine(coroutine);
         }
+
+        coroutine = TableSpawnCoroutine(table);
+        StartCoroutine(coroutine);
 
     }
 
@@ -162,103 +126,77 @@ public class HumanManager : MonoBehaviour
             StopCoroutine(coroutine);
         }
 
-        CoroutineListClear();
-    }
-
-
-    /// <summary>
-    /// 각 타입마다 생성기, 빌딩은 랜덤
-    /// </summary>
-    /// <param name="set"></param>
-    /// <returns></returns>
-    IEnumerator MultipleSpawnCoroutine(ScriptableLevel.StructSetHuman set)
-    {
-        float t = 0;
-        float SpawnTime = UnityEngine.Random.Range(set.MinTime, set.MaxTime);
-
-        while (true)
-        {
-            if (t < SpawnTime)
-            {
-                t += Time.deltaTime;
-            }
-            else
-            {
-                t -= SpawnTime;
-
-                SpawnTime = UnityEngine.Random.Range(set.MinTime, set.MaxTime);
-                int BuildingIndex = UnityEngine.Random.Range(0, Buildings.Length-1);
-
-                SetPool(set.Type, set.Speed, set.AttackPoint, BuildingIndex);
-            }
-
-            yield return null;
-        }
-
     }
 
     /// <summary>
-    /// 고정방식
+    /// 컨셉3 : CSV 테이블 기반, 유닛별 Rate 생성기
     /// </summary>
+    /// <param name="table"></param>
     /// <returns></returns>
-    IEnumerator FixedSpawnCoroutine()
+    IEnumerator TableSpawnCoroutine(Dictionary<string, object> table)
     {
-        LevelManager lm = LevelManager.Instance;
-
         float t = 0;
-        int fixedTime = 0;
+        int SpawnPerSecond = int.Parse(table["SpawnPerSecond"].ToString());
+        float SpawnTime = 1.0f;
 
-        // 0초 생성
-        ScriptableLevel sl = lm.GetLevel();
+        Debug.Log("SpawnPerSecond : " + SpawnTime);
 
-        ScriptableLevel.StructSetFixedHuman[] datas = sl.FixedHuman[fixedTime].Data;
-
-        if(datas.Length > 0)
-        {
-            for (int i = 0; i < datas.Length; i++)
-            {
-                EnumHuman eh = datas[i].Type;
-                int buildingIndex = datas[i].BuildingIndex;
-                float speed = datas[i].MoveSpeed;
-                float attackPoint = datas[i].AttackPoint;
-
-                SetPool(eh, speed, attackPoint, buildingIndex);
-            }
-        }
+        // Rate 0 ~ 10
+        int NormalRate = int.Parse(table["NormalRate"].ToString());
+        int CollectorRate = int.Parse(table["CollectorRate"].ToString()) + NormalRate;
+        int InsaneRate = int.Parse(table["InsaneRate"].ToString()) + CollectorRate;
+        int RebelRate = int.Parse(table["RebelRate"].ToString()) + InsaneRate;
+        int BomberRate = int.Parse(table["BomberRate"].ToString()) + RebelRate;
 
         while (true)
         {
-            // 1초마다 생성
-            if(t >= 1.0f)
+            if(t >= SpawnTime)
             {
-                fixedTime += 1;
-                t -= 1;
-
-                sl = lm.GetLevel();
-
-                // 설정된 레벨이 모드 끝난경우 : 코루틴 종료
-                if(fixedTime >= sl.FixedHuman.Length)
+                // N 마리 생성
+                for (int i = 0; i < SpawnPerSecond; i++)
                 {
-                    yield break;
-                }
+                    int dice = UnityEngine.Random.Range(0, 10); // 0 ~ 9
+                    string key;
 
-                // 1초 생성
-                sl = lm.GetLevel();
+                    // 이동패턴
+                    StringBuilder Pattern = new StringBuilder();
+                    Pattern.Append("Normal");
 
-                datas = sl.FixedHuman[fixedTime].Data;
-
-                if (datas.Length > 0)
-                {
-                    for (int i = 0; i < datas.Length; i++)
+                    if (dice >= BomberRate)
                     {
-                        EnumHuman eh = datas[i].Type;
-                        int buildingIndex = datas[i].BuildingIndex;
-                        float speed = datas[i].MoveSpeed;
-                        float attackPoint = datas[i].AttackPoint;
-
-                        SetPool(eh, speed, attackPoint, buildingIndex);
+                        key = "Bomber";
                     }
+                    else if (dice >= RebelRate)
+                    {
+                        key = "Rebel";
+                    }
+                    else if (dice >= InsaneRate)
+                    {
+                        key = "Insane";
+                    }
+                    else if (dice >= CollectorRate)
+                    {
+                        key = "Collector";
+                    }
+                    else
+                    {
+                        // 노말!
+                        key = "Normal_" + table["Chapter"].ToString();
+                        Pattern.Clear();
+                        Pattern.Append(table["Pattern"].ToString());
+                    }
+
+                    // 능력치, 위치 설정
+                    float Speed = float.Parse(table["Speed"].ToString()); // 스피드                
+                    float AttackPoint = float.Parse(table["AttackPoint"].ToString()); // 공격력
+
+                    int BuildingIndex = GetBuildingIndex();
+                    
+                    // Spawn!
+                    SetPool(key, Speed, AttackPoint, Pattern.ToString(), BuildingIndex);
                 }
+
+                t -= SpawnTime;
             }
             else
             {
@@ -270,6 +208,25 @@ public class HumanManager : MonoBehaviour
 
     }
 
+    public int GetBuildingIndex()
+    {
+        int loopCount = 0;
+
+        while (loopCount < 10)
+        {
+            int rand = UnityEngine.Random.Range(0, Buildings.Length - 1);
+
+            if (LevelManager.Instance.Buildings[rand].enabled == false)
+            {
+                loopCount += 1;
+                continue;
+            }
+
+            return rand;
+        }
+
+        return 2;
+    }
 
     public Vector3 GetCreationPoint()
     {
@@ -282,7 +239,7 @@ public class HumanManager : MonoBehaviour
     #region Pooling
     public bool IncreasePool(string key, int num)
     {
-        // 생성된 오브젝트가 PoolMaxCount 이상이면 늘리지 않는다.
+        // 활성화된 오브젝트가 PoolMaxCount 이상이면 늘리지 않는다.
         if (ObjectCount >= PoolMaxCount)
         {
             return false;
@@ -293,48 +250,28 @@ public class HumanManager : MonoBehaviour
         for (int i = 0; i < num; i++)
         {
             GameObject go = Instantiate(DataDic[key]);
-            // sorting order
-            go.GetComponent<SpriteRenderer>().sortingOrder = ObjectCount;
-
+            
             List[key].Add(go);
             go.SetActive(false);
-
-            ObjectCount += 1;
-            UIManager.Instance.UpdateHumanCount(ObjectCount);
+            
         }
 
         return true;
     }
 
-    public void SetPool(EnumHuman eh, float speed, float attackPoint, int buildingIndex)
-    {
-        // enum to string (key)
-        string key = Enum.GetName(typeof(EnumHuman), eh);
-
-        SetPool(key, speed, attackPoint, buildingIndex);
-    }
-
-    public void SetPool(EnumHuman eh, float speed, int buildingIndex)
-    {
-        // enum to string (key)
-        string key = Enum.GetName(typeof(EnumHuman), eh);
-
-        SetPool(key, speed, buildingIndex);
-    }
-
-    public void SetPool(EnumHuman eh, int buildingIndex)
-    {
-        // enum to string (key)
-        string key = Enum.GetName(typeof(EnumHuman), eh);
-
-        SetPool(key, buildingIndex);
-    }
-
-    public void SetPool(string key, float speed, float attackPoint, int buildingIndex)
+    /// <summary>
+    /// 최종 SetPool - CSV 기반
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="speed"></param>
+    /// <param name="attackPoint"></param>
+    /// <param name="pattern"></param>
+    /// <param name="buildingIndex"></param>
+    public void SetPool(string key, float speed, float attackPoint, string pattern, int buildingIndex)
     {
         if (DataDic.ContainsKey(key) == false)
         {
-            Debug.LogWarning("없는 이름으로 Human 생성 : " + key);
+            Debug.LogError("없는 이름으로 Human 생성 : " + key);
             return;
         }
 
@@ -348,73 +285,14 @@ public class HumanManager : MonoBehaviour
                 {
                     h.gameObject.SetActive(true);
 
-                    //h.InitHuman(GetCreationPoint(), speed);
-                    h.InitHuman(Buildings[buildingIndex].position, speed, attackPoint);
+                    h.InitHuman(Buildings[buildingIndex].position, speed, attackPoint, pattern);
 
-                    return;
-                }
-            }
+                    // sorting order
+                    h.GetComponent<SpriteRenderer>().sortingOrder = ObjectCount;
 
-            if (IncreasePool(key, 1) == false)
-            {
-                return;
-            }
-        }
-    }
-
-
-    public void SetPool(string key, float speed, int buildingIndex)
-    {
-        if (DataDic.ContainsKey(key) == false)
-        {
-            Debug.LogWarning("없는 이름으로 Human 생성 : " + key);
-            return;
-        }
-
-        while (true)
-        {
-            for (int i = 0; i < List[key].Count; i++)
-            {
-                Human h = List[key][i].GetComponent<Human>();
-
-                if (h.gameObject.activeSelf == false)
-                {
-                    h.gameObject.SetActive(true);
-
-                    //h.InitHuman(GetCreationPoint(), speed);
-                    h.InitHuman(Buildings[buildingIndex].position, speed);
-
-                    return;
-                }
-            }
-
-            if(IncreasePool(key, 1) == false)
-            {
-                return;
-            }
-        }
-    }
-
-    public void SetPool(string key, int buildingIndex)
-    {
-        if (DataDic.ContainsKey(key) == false)
-        {
-            Debug.LogWarning("없는 이름으로 Human 생성 : " + key);
-            return;
-        }
-
-        while (true)
-        {
-            for (int i = 0; i < List[key].Count; i++)
-            {
-                Human h = List[key][i].GetComponent<Human>();
-
-                if (h.gameObject.activeSelf == false)
-                {
-                    h.gameObject.SetActive(true);
-
-                    //h.InitHuman(GetCreationPoint());
-                    h.InitHuman(Buildings[buildingIndex].position);
+                    // 활성화된 오브젝트만 수를 센다.
+                    ObjectCount += 1;
+                    UIManager.Instance.UpdateHumanCount(ObjectCount);
 
                     return;
                 }
@@ -438,10 +316,13 @@ public class HumanManager : MonoBehaviour
             for (int i = 0; i < childList.Count; i++)
             {
                 if (childList[i].activeSelf == true)
-                {
+                {                    
                     childList[i].SetActive(false);
                 }
             }
         }
+
+        ObjectCount = 0;
+        UIManager.Instance.UpdateHumanCount(ObjectCount);
     }
 }

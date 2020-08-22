@@ -28,6 +28,9 @@ public class Human : MonoBehaviour, IPointerUpHandler, IPointerDownHandler, ITou
     [HideInInspector]
     public bool Dragable;
 
+    //[HideInInspector]
+    public bool PaternRandom = false;
+
     public Touch MyTouch;
 
     #endregion
@@ -101,6 +104,53 @@ public class Human : MonoBehaviour, IPointerUpHandler, IPointerDownHandler, ITou
         anim = GetComponent<Animator>();
         circle = GetComponent<CircleCollider2D>();
 
+    }
+
+    /// <summary>
+    /// 최종 예상 - CSV 기반
+    /// </summary>
+    /// <param name="position"></param>
+    /// <param name="speed"></param>
+    /// <param name="attackPoint"></param>
+    public virtual void InitHuman(Vector3 position, float speed, float attackPoint, string pattern)
+    {
+        Dragable = true;
+
+        transform.position = position;
+
+        if (speed < 1)
+        {
+            speed = 1;
+        }
+
+        if (attackPoint < 1)
+        {
+            attackPoint = 1;
+        }
+
+        if (pattern.Equals("Random")) 
+        {
+            PaternRandom = true;
+        }
+        else // Normal
+        {
+            PaternRandom = false;
+        }
+
+        MoveSpeed = speed;
+        AttackPoint = attackPoint;
+
+
+        /*
+         * 애니메이션 속도
+         * 1 = 1
+         * 5 = 3
+         */
+
+        anim.speed = 0.5f + (speed * 0.5f);
+
+        NowState = null;
+        ChangeState(HumanState.HumanStateIdle);
     }
 
     public virtual void InitHuman(Vector3 position, float speed, float attackPoint)
