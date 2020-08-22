@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Level_1_1
   m_EditorClassIdentifier: 
   ClearTime: 30
-  Center: {fileID: 3951526996536891727, guid: e68f386eb29fc224085ca51a72fe950e, type: 3}
-  Builginds: []
+  Center: 0
+  Builginds: 0000000001000000010000000100000001000000
+  Ground: 0
   SetHuman:
   - Type: 0
     MinTime: 5
