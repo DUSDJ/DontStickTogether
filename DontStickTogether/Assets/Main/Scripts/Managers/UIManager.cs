@@ -60,6 +60,7 @@ public class UIManager : MonoBehaviour
 
     public GameObject PlayerCanvas;
     public Image BioHazard;
+    public Image Vinnette;
 
     [System.Serializable]
     public struct StructMainTimer
@@ -216,6 +217,10 @@ public class UIManager : MonoBehaviour
 
         float value = (now / max);
         BioHazard.fillAmount = value;
+
+        Color c = Vinnette.color;
+        c.a = value;
+        Vinnette.color = c;
 
         // Update Player State
         UpdatePlayerState(value);

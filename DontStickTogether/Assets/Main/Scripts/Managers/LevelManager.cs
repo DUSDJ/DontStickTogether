@@ -29,9 +29,6 @@ public class LevelManager : MonoBehaviour
 
     #endregion
 
-    [HideInInspector]
-    public ScriptableLevel[] Levels;
-
     public int NowLevel = 1;
 
     #region 레벨 그래픽 관련
@@ -67,10 +64,6 @@ public class LevelManager : MonoBehaviour
 
         #endregion
 
-
-        /* Level Data Init */
-        ScriptableLevel[] datas = Resources.LoadAll<ScriptableLevel>("Level/");
-        Levels = datas;
 
         /* Level Data CSV Init */
         LevelTable = CSVReader.Read("LevelCSV/LevelSheet");
@@ -114,21 +107,21 @@ public class LevelManager : MonoBehaviour
     public void SetLevel()
     {
         // Get Level
-        ScriptableLevel sl = GetLevel();
+        Dictionary<string, object> table = GetLevelCSV();
 
-        // Ground Set
-        string groundKey = Enum.GetName(typeof(EnumGround), sl.Ground);
-        if (GroundDic.ContainsKey(groundKey))
+        // Background Set
+        string backgroundKey = table["BackgroundKey"].ToString();
+        if (GroundDic.ContainsKey(backgroundKey))
         {
-            Ground.sprite = GroundDic[groundKey];
+            Ground.sprite = GroundDic[backgroundKey];
         }
         else
         {
-            Debug.LogError("groundKey 잘못되어있습니다. Resources/Ground 폴더의 스프라이트 이름과 Enum 이름이 일치하는지 확인하세요.");
+            Debug.LogError("backgroundKey 잘못되어있습니다. Resources/Ground 폴더의 스프라이트 이름과 CSV 파일이 일치하는지 확인하세요.");
         }
 
         // Center Set
-        string centerKey = Enum.GetName(typeof(EnumCenter), sl.Center);
+        string centerKey = table["CenterKey"].ToString();
 
         if (CenterDic.ContainsKey(centerKey))
         {
@@ -143,47 +136,9 @@ public class LevelManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("centerKey가 잘못되어있습니다. 프리팹 이름과 Enum 이름이 일치하는지 확인하세요.");
+            Debug.LogError("centerKey가 잘못되어있습니다. 프리팹 이름과 CSV 파일이 일치하는지 확인하세요.");
         }
-                
-
-        // Building Set
-        for (int i = 0; i < sl.Builginds.Length; i++)
-        {
-            // None Check
-            if (sl.Builginds[i] == EnumBulding.None)
-            {
-                Buildings[i].enabled = false;
-                continue;
-            }
-            else
-            {
-                Buildings[i].enabled = true;
-            }
-
-            string buildingKey = Enum.GetName(typeof(EnumBulding), sl.Builginds[i]);
-            if (BuildingDic.ContainsKey(buildingKey))
-            {
-                Buildings[i].sprite = BuildingDic[buildingKey];
-            }
-            else
-            {
-                Debug.LogError("buildingKey 잘못되어있습니다. Resources/Building 폴더의 스프라이트 이름과 Enum 이름이 일치하는지 확인하세요.");
-            }
-
-        }
-    }
-
-
-    public ScriptableLevel GetLevel()
-    {
-        // 레벨 초과
-        if(NowLevel - 1 >= Levels.Length)
-        {
-            return null;
-        }
-
-        return Levels[NowLevel - 1];
+        
     }
 
 

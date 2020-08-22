@@ -232,22 +232,9 @@ public class HumanManager : MonoBehaviour
 
     public int GetBuildingIndex()
     {
-        int loopCount = 0;
+        int rand = UnityEngine.Random.Range(0, Buildings.Length - 1);
 
-        while (loopCount < 10)
-        {
-            int rand = UnityEngine.Random.Range(0, Buildings.Length - 1);
-
-            if (LevelManager.Instance.Buildings[rand].enabled == false)
-            {
-                loopCount += 1;
-                continue;
-            }
-
-            return rand;
-        }
-
-        return 2;
+        return rand;
     }
 
     public Vector3 GetCreationPoint()

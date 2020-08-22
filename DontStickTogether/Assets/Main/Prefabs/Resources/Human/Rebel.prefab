@@ -60,7 +60,7 @@ MonoBehaviour:
   anim: {fileID: 0}
   circle: {fileID: 0}
   Target: {fileID: 0}
-  RebelTime: 0.01
+  RebelTime: 0.1
   RebelDistance: 0.5
   AngryEffectDuration: 1.2
 --- !u!212 &8843850746651897947
