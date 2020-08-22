@@ -176,7 +176,7 @@ public class SoundManager : MonoBehaviour
         {
             MainAudio.clip = GameOverBGM;
             MainAudio.Play();
-            MainAudio.loop = true;
+            MainAudio.loop = false;
         }
     }
 

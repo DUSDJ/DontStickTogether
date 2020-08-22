@@ -142,11 +142,30 @@ public class HumanManager : MonoBehaviour
         Debug.Log("SpawnPerSecond : " + SpawnTime);
 
         // Rate 0 ~ 10
+        
         int NormalRate = int.Parse(table["NormalRate"].ToString());
-        int CollectorRate = int.Parse(table["CollectorRate"].ToString()) + NormalRate;
-        int InsaneRate = int.Parse(table["InsaneRate"].ToString()) + CollectorRate;
-        int RebelRate = int.Parse(table["RebelRate"].ToString()) + InsaneRate;
-        int BomberRate = int.Parse(table["BomberRate"].ToString()) + RebelRate;
+        int CollectorRate = int.Parse(table["CollectorRate"].ToString());
+        int InsaneRate = int.Parse(table["InsaneRate"].ToString());
+        int RebelRate = int.Parse(table["RebelRate"].ToString());
+        int BomberRate = int.Parse(table["BomberRate"].ToString());
+        
+
+        /*
+        int adder = 0;
+        Vector2Int NormalRate = new Vector2Int(adder, (int.Parse(table["NormalRate"].ToString()) + adder));
+        adder += NormalRate.y;
+
+        Vector2Int CollectorRate = new Vector2Int(adder, (int.Parse(table["CollectorRate"].ToString()) + adder));
+        adder += CollectorRate.y;
+
+        Vector2Int InsaneRate = new Vector2Int(adder, (int.Parse(table["InsaneRate"].ToString()) + adder));
+        adder += InsaneRate.y;
+
+        Vector2Int RebelRate = new Vector2Int(adder, (int.Parse(table["RebelRate"].ToString()) + adder));
+        adder += RebelRate.y;
+
+        Vector2Int BomberRate = new Vector2Int(adder, (int.Parse(table["BomberRate"].ToString()) + adder));
+        */
 
         while (true)
         {
@@ -155,36 +174,39 @@ public class HumanManager : MonoBehaviour
                 // N 마리 생성
                 for (int i = 0; i < SpawnPerSecond; i++)
                 {
-                    int dice = UnityEngine.Random.Range(0, 10); // 0 ~ 9
-                    string key;
+                    int dice = UnityEngine.Random.Range(0, 10); // 0 ~ 9                    
+                    string key = "Bug";
 
                     // 이동패턴
                     StringBuilder Pattern = new StringBuilder();
                     Pattern.Append("Normal");
 
-                    if (dice >= BomberRate)
-                    {
-                        key = "Bomber";
-                    }
-                    else if (dice >= RebelRate)
-                    {
-                        key = "Rebel";
-                    }
-                    else if (dice >= InsaneRate)
-                    {
-                        key = "Insane";
-                    }
-                    else if (dice >= CollectorRate)
-                    {
-                        key = "Collector";
-                    }
-                    else
+                    if(dice < NormalRate && NormalRate != 0)
                     {
                         // 노말!
                         key = "Normal_" + table["Chapter"].ToString();
                         Pattern.Clear();
                         Pattern.Append(table["Pattern"].ToString());
                     }
+                    else if (dice < CollectorRate + NormalRate && CollectorRate != 0)
+                    {
+                        key = "Collector";
+                    }
+                    else if (dice < InsaneRate + CollectorRate + NormalRate && InsaneRate != 0)
+                    {
+                        key = "Insane";
+                    }
+                    else if (dice < RebelRate + InsaneRate + CollectorRate + NormalRate && RebelRate != 0)
+                    {
+                        key = "Rebel";
+                    }
+                    else if (BomberRate != 0)
+                    {
+                        key = "Bomber";
+                    }
+
+                    Debug.Log("Dice : " + dice);
+                    Debug.Log(key);
 
                     // 능력치, 위치 설정
                     float Speed = float.Parse(table["Speed"].ToString()); // 스피드                

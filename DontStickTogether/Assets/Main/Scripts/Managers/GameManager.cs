@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine;
-using UnityScript.Steps;
 
 public class GameManager : MonoBehaviour
 {
@@ -102,6 +101,34 @@ public class GameManager : MonoBehaviour
 
     #endregion
 
+
+    #region CheatKey
+
+    bool cheatInvincible = false;
+
+    public void CheatClear()
+    {
+        GameClear();
+    }
+
+    public void CheatInvincible()
+    {
+        if(cheatInvincible == false)
+        {
+            MaxBioHazard = 1000000;
+            NowBioHazard -= 10000;
+            cheatInvincible = true;
+            UIManager.Instance.UpdateCheatInvincible(true);
+        }
+        else
+        {
+            MaxBioHazard = 100;
+            NowBioHazard = 0;
+            cheatInvincible = false;
+            UIManager.Instance.UpdateCheatInvincible(false);
+        }
+    }
+    #endregion
 
     public Transform Center;
 

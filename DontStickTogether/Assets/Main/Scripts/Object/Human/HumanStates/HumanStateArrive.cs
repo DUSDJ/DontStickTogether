@@ -11,12 +11,12 @@ public class HumanStateArrive : IState<Human>
     IEnumerator UpdateCoroutine()
     {
         // 연출부
-        // 임시로 Idle Animation
+        // Attack Animation
         foreach (AnimatorControllerParameter param in parent.anim.parameters)
         {
-            if (param.name == "Idle")
+            if (param.name == "Attack")
             {
-                parent.anim.SetTrigger("Idle");
+                parent.anim.SetBool("Attack", true);
             }
         }
 
@@ -61,9 +61,9 @@ public class HumanStateArrive : IState<Human>
 
         foreach (AnimatorControllerParameter param in parent.anim.parameters)
         {
-            if (param.name == "Idle")
+            if (param.name == "Attack")
             {
-                parent.anim.ResetTrigger("Idle");
+                parent.anim.SetBool("Attack", false);
             }
         }
     }

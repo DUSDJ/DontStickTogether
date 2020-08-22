@@ -64,6 +64,25 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
+    #region Cheat
+
+    public Image CheatInvincible;
+
+    public void UpdateCheatInvincible(bool OnOff)
+    {
+        if(OnOff == true)
+        {
+            CheatInvincible.color = Color.red;
+        }
+        else
+        {
+            CheatInvincible.color = Color.white;
+        }
+        
+    }
+
+    #endregion
+
 
     #region Coroutines
 

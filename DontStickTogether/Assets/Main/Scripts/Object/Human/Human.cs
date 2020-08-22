@@ -107,7 +107,7 @@ public class Human : MonoBehaviour, IPointerUpHandler, IPointerDownHandler, ITou
     }
 
     /// <summary>
-    /// 최종 예상 - CSV 기반
+    /// 최종 - CSV 기반
     /// </summary>
     /// <param name="position"></param>
     /// <param name="speed"></param>
@@ -150,71 +150,6 @@ public class Human : MonoBehaviour, IPointerUpHandler, IPointerDownHandler, ITou
         anim.speed = 0.5f + (speed * 0.5f);
 
         NowState = null;
-        ChangeState(HumanState.HumanStateIdle);
-    }
-
-    public virtual void InitHuman(Vector3 position, float speed, float attackPoint)
-    {
-        Dragable = true;
-
-        transform.position = position;
-
-        if (speed < 1)
-        {
-            speed = 1;
-        }
-
-        if(attackPoint < 1)
-        {
-            attackPoint = 1;
-        }
-
-        MoveSpeed = speed;
-
-        AttackPoint = attackPoint;
-        
-
-        /*
-         * 애니메이션 속도
-         * 1 = 1
-         * 5 = 3
-         */
-
-        anim.speed = 0.5f + (speed * 0.5f);
-
-        ChangeState(HumanState.HumanStateIdle);
-    }
-
-    public virtual void InitHuman(Vector3 position, float speed)
-    {
-        Dragable = true;
-
-        transform.position = position;
-
-        if(speed < 1)
-        {
-            speed = 1;
-        }
-
-        MoveSpeed = speed;
-
-        /*
-         * 애니메이션 속도
-         * 1 = 1
-         * 5 = 3
-         */
-
-        anim.speed = 0.5f + (speed * 0.5f);
-
-        ChangeState(HumanState.HumanStateIdle);
-    }
-
-    public virtual void InitHuman(Vector3 position)
-    {
-        Dragable = true;
-
-        transform.position = position;
-
         ChangeState(HumanState.HumanStateIdle);
     }
 
