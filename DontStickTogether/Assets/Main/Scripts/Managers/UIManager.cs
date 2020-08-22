@@ -117,40 +117,14 @@ public class UIManager : MonoBehaviour
     {
         if (OnOff == true)
         {
-            // GameClear 등장 연출부
-            //
-
-            if(GameClearCoroutine != null)
-            {
-                StopCoroutine(GameClearCoroutine);
-            }
-            GameClearCoroutine = GameClearUpdate(2.0f);
-            StartCoroutine(GameClearCoroutine);
+            PlayerCanvas.SetActive(false);
+            GameClearObject.SetActive(true);
         }
         else
         {
-            // GameClear 소멸 연출부
-            //
-
-            if (GameClearCoroutine != null)
-            {
-                StopCoroutine(GameClearCoroutine);
-            }
+            PlayerCanvas.SetActive(true);
             GameClearObject.SetActive(false);
         }
-    }
-
-    IEnumerator GameClearUpdate(float duration)
-    {
-        float t = 0;
-        while(t < duration)
-        {
-            t += Time.deltaTime;
-
-            yield return null;
-        }
-
-        GameClearObject.SetActive(false);
     }
 
 

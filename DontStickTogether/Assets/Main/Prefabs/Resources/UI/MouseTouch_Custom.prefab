@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5621793148265096854}
   - component: {fileID: 1556662723749944859}
   - component: {fileID: 680776724517930285}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: MouseTouch_Custom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ GameObject:
   - component: {fileID: 5643691843730522254}
   - component: {fileID: 5643691843730522252}
   - component: {fileID: 5643691843730522253}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: SmallQuad3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -147,7 +147,7 @@ GameObject:
   - component: {fileID: 5643691843950046911}
   - component: {fileID: 5643691843950046909}
   - component: {fileID: 5643691843950046910}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: SmallQuad4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -221,7 +221,7 @@ GameObject:
   - component: {fileID: 5643691844164702336}
   - component: {fileID: 5643691844164702342}
   - component: {fileID: 5643691844164702343}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: SmallQuad1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -295,7 +295,7 @@ GameObject:
   - component: {fileID: 5643691844563768436}
   - component: {fileID: 5643691844563768426}
   - component: {fileID: 5643691844563768427}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: SmallQuad6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -369,7 +369,7 @@ GameObject:
   - component: {fileID: 5643691844608166343}
   - component: {fileID: 5643691844608166341}
   - component: {fileID: 5643691844608166342}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: SmallQuad8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -443,7 +443,7 @@ GameObject:
   - component: {fileID: 5643691844748884720}
   - component: {fileID: 5643691844748884726}
   - component: {fileID: 5643691844748884727}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: SmallQuad5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -515,7 +515,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5643691844870295978}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: SmallQuad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -555,7 +555,7 @@ GameObject:
   - component: {fileID: 5643691844930275453}
   - component: {fileID: 5643691844930275443}
   - component: {fileID: 5643691844930275452}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: BigSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -630,7 +630,7 @@ GameObject:
   - component: {fileID: 5643691845215872908}
   - component: {fileID: 5643691845215872898}
   - component: {fileID: 5643691845215872899}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: SmallQuad2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -704,7 +704,7 @@ GameObject:
   - component: {fileID: 5643691845243340551}
   - component: {fileID: 5643691845243340549}
   - component: {fileID: 5643691845243340550}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: BigSprite1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -778,7 +778,7 @@ GameObject:
   - component: {fileID: 5643691845370281591}
   - component: {fileID: 5643691845370281589}
   - component: {fileID: 5643691845370281590}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: SmallQuad7
   m_TagString: Untagged
   m_Icon: {fileID: 0}

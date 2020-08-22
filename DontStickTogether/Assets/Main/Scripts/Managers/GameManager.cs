@@ -245,6 +245,9 @@ public class GameManager : MonoBehaviour
 
     public void GameInIt()
     {
+        
+        UIManager.Instance.GameClear(false);
+
         NowBioHazard = 0;
 
         Dictionary<string, object> levelData = LevelManager.Instance.GetLevelCSV();
@@ -314,11 +317,9 @@ public class GameManager : MonoBehaviour
 
         // 클리어 연출부
         UIManager.Instance.GameClear(true);
-
         LevelManager.Instance.NowLevel += 1;
-
-        GameInIt();
     }
+
 
     public void GameOver()
     {
