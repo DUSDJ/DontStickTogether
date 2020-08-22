@@ -33,7 +33,7 @@ public class SoundManager : MonoBehaviour
     // Main BGM Volume
     [SerializeField][Range(0f,1f)]
     private float bgmVolume;
-    public float BgmVolume
+    public float BGMVolume
     {
         get
         {
@@ -94,6 +94,9 @@ public class SoundManager : MonoBehaviour
     public int SoundObjectMaxCount;
     private int SoundObjectCount;
 
+
+    public AudioClip MainBGM;
+
     #endregion
 
 
@@ -146,8 +149,6 @@ public class SoundManager : MonoBehaviour
 
     public void StartMainBGM()
     {
-        StopGameOverBGM();
-
         if (MainAudio.isPlaying == false)
         {
             MainAudio.clip = MainBGM;
@@ -182,29 +183,17 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public AudioClip MainBGM;
-    public AudioClip GameOverBGM;
-
+    
     public void StartGameOverBGM()
     {
         StopMainBGM();
         
         if (MainAudio.isPlaying == false)
         {
-            MainAudio.clip = GameOverBGM;
-            MainAudio.Play();
-            MainAudio.loop = false;
+            SetPool("GameOver2");            
         }
     }
 
-    public void StopGameOverBGM()
-    {
-        if (MainAudio.clip == GameOverBGM
-            && MainAudio.isPlaying == true)
-        {
-            MainAudio.Stop();
-        }
-    }
 
     #region Pooling
     public bool IncreasePool(string key, int num)
@@ -272,7 +261,7 @@ public class SoundManager : MonoBehaviour
 
     public void SetBgmVolume(float volume)
     {
-        BgmVolume = volume;
+        BGMVolume = volume;
     }
 
     public void SetSoundEffectVolume(float volume)

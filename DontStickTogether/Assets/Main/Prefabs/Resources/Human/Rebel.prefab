@@ -60,9 +60,9 @@ MonoBehaviour:
   anim: {fileID: 0}
   circle: {fileID: 0}
   Target: {fileID: 0}
-  RebelTime: 0.3
+  RebelTime: 0.01
   RebelDistance: 0.5
-  EscapeDirectionDown: 1
+  AngryEffectDuration: 1.2
 --- !u!212 &8843850746651897947
 SpriteRenderer:
   m_ObjectHideFlags: 0

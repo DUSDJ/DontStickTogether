@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -36,28 +38,38 @@ public class UIManager : MonoBehaviour
     public struct StructStartingObject
     {
         public GameObject TimerObject;
-        public TextMeshProUGUI TimerText;
+        public Text TimerText;
     }
     public StructStartingObject StartingObject;
 
+ 
     [System.Serializable]
-    public struct StructTestObject
+    public struct StructHeaderLeft
     {
-        [Header("테스트용 오브젝트 수 Text")]
-        public TextMeshProUGUI HumanCountText;
+        public Text ChapterText;
+        public Text StageText;
+        public Text PlayerText;
 
-        public TextMeshProUGUI ChapterText;
-        public TextMeshProUGUI StageText;
-
+        [Header("상태에 따른 색")]
+        public Color Danger;
+        public Color Alert;
+        public Color Safe;
     }
-    public StructTestObject TestObject;
+    public StructHeaderLeft HeaderLeft;
 
 
     public GameObject PlayerCanvas;
     public Image BioHazard;
 
-    public GameObject GameClearFlagObject;
-    public TextMeshProUGUI GameClearFlagText;
+    [System.Serializable]
+    public struct StructMainTimer
+    {
+
+        public GameObject MainTimerObject;
+        public Text MainTimerText;
+    }
+    public StructMainTimer MainTimer;
+    
 
     public GameObject GameClearObject;
     public GameObject GameOverObject;
@@ -172,35 +184,29 @@ public class UIManager : MonoBehaviour
     public void StartTimerUpdate(int value)
     {
         
-        StartingObject.TimerText.text = value.ToString();
+        StartingObject.TimerText.text = string.Format("0{0}:00",value);
     }
 
-    public void FlagSet(bool OnOff)
+    public void MainTimerSet(bool OnOff)
     {
         if (OnOff == true)
         {
-            // Main Timer 등장 연출부
-            //
-
-            GameClearFlagObject.SetActive(true);
+            // Main Timer 등장 연출부            
+            MainTimer.MainTimerObject.SetActive(true);
         }
         else
         {
             // Main Timer 소멸 연출부
             //
 
-            GameClearFlagObject.SetActive(false);
+            MainTimer.MainTimerObject.SetActive(false);
         }
     }
 
     public void FlagUpdate(float leftTime)
-    {        
-        GameClearFlagText.text = string.Format("{0:F2}", leftTime);
-    }
-
-    public void UpdateHumanCount(int value)
     {
-        TestObject.HumanCountText.text = string.Format("Obj : {0}", value);
+
+        MainTimer.MainTimerText.text = string.Format("{0:0.00}", leftTime).Replace(".", ":");
     }
 
     public void UpdateBioHazard()
@@ -208,16 +214,124 @@ public class UIManager : MonoBehaviour
         float max = GameManager.Instance.MaxBioHazard;
         float now = GameManager.Instance.NowBioHazard;
 
-        BioHazard.fillAmount = (now / max);
+        float value = (now / max);
+        BioHazard.fillAmount = value;
+
+        // Update Player State
+        UpdatePlayerState(value);
+    }
+
+
+    #region Header Left
+
+    public void UpdatePlayerState(float value)
+    {
+        if (value > 0.7f)
+        {
+            HeaderLeft.PlayerText.color = HeaderLeft.Danger;
+            HeaderLeft.PlayerText.text = "위험";
+        }
+        else if (value > 0.3f)
+        {
+            HeaderLeft.PlayerText.color = HeaderLeft.Alert;
+            HeaderLeft.PlayerText.text = "경계";
+        }
+        else
+        {
+            HeaderLeft.PlayerText.color = HeaderLeft.Safe;
+            HeaderLeft.PlayerText.text = "안전";
+        }
     }
 
     public void UpdateChapter(int value)
     {
-        TestObject.ChapterText.text = string.Format("Chpater :{0}", value);
+        HeaderLeft.ChapterText.text = string.Format("{0}", value);
     }
 
     public void UpdateStage(int value)
     {
-        TestObject.StageText.text = string.Format("Stage :{0}", value);
+        HeaderLeft.StageText.text = string.Format("{0}", value);
     }
+
+    #endregion
+
+    [System.Serializable]
+    public struct StructHeaderRight
+    {
+        public GameObject OptionObject;
+        public Slider BGMSoundSlider;
+        public Text BGMSoundText;
+        public Slider SoundEffectSlider;
+        public Text SoundEffectText;
+        public GameObject PauseObject;
+    }
+    public StructHeaderRight HeaderRight;
+
+    #region Header Right
+
+    #region Option
+
+    public void BtnOption()
+    {
+        GameManager.Instance.GameStop(true);
+        HeaderRight.OptionObject.SetActive(true);
+
+        HeaderRight.BGMSoundSlider.value = SoundManager.Instance.BGMVolume;
+        HeaderRight.SoundEffectSlider.value = SoundManager.Instance.SoundEffectVolume;
+    }
+
+    public void BtnOptionClose()
+    {
+        GameManager.Instance.GameStop(false);
+
+        PlayerDataManager.Instance.UpdateVolumeData();
+
+        HeaderRight.OptionObject.SetActive(false);
+    }
+
+    public void SliderBGMSound()
+    {
+        SoundManager.Instance.BGMVolume = HeaderRight.BGMSoundSlider.value;
+        HeaderRight.BGMSoundText.text = string.Format("{0}", Math.Truncate(HeaderRight.BGMSoundSlider.value * 100));
+    }
+
+    public void SliderSoundEffect()
+    {
+        SoundManager.Instance.SoundEffectVolume = HeaderRight.SoundEffectSlider.value;
+        HeaderRight.SoundEffectText.text = string.Format("{0}", Math.Truncate(HeaderRight.SoundEffectSlider.value * 100));        
+    }
+
+    #endregion
+
+    #region Pause
+
+    public void BtnPause()
+    {
+        GameManager.Instance.GameStop(true);
+        HeaderRight.PauseObject.SetActive(true);
+    }
+
+    public void BtnPauseClose()
+    {
+        GameManager.Instance.GameStop(false);
+        HeaderRight.PauseObject.SetActive(false);
+    }
+
+    public void BtnReplay()
+    {
+        GameManager.Instance.GameRestart();
+        
+        BtnPauseClose();
+    }
+
+    public void BtnTitle()
+    {
+        BtnPauseClose();
+
+        SceneManager.LoadScene(0);
+    }
+
+    #endregion
+
+    #endregion
 }

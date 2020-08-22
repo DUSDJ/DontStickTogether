@@ -42,10 +42,6 @@ public class RebelStateDrag : HumanStateDrag
                 // Escape!
                 if(dragTime >= rebelParent.RebelTime)
                 {
-                    // Effect : Trail 완료
-                    trail.SetParent(EffectManager.Instance.transform, false);
-                    trail.gameObject.SetActive(false);
-
                     // 효과음
 
                     // 이펙트 : 임시로 느낌표...

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -31,6 +32,8 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region Values
+    
+    
 
     [Header("시작 대기 시간")]
     public int StartTime;
@@ -149,37 +152,31 @@ public class GameManager : MonoBehaviour
         #endregion
     }
 
+    
     private void Start()
     {
-        UIManager.Instance.GameClear(false);        
+        UIManager.Instance.GameClear(false);
+
+        if (PlayerDataManager.Instance.WillYouLoadData == true)
+        {
+            PlayerDataManager.Instance.LoadDataApply();            
+        }
+        else
+        {
+            PlayerDataManager.Instance.LoadDataOnlySoundApply();
+            LevelManager.Instance.NowLevel = 1;
+        }
+
+        // 초기값 혹은 로드값 저장
+        PlayerDataManager.Instance.UpdateSaveData();
+        PlayerDataManager.Instance.UpdateVolumeData();
 
         GameInIt();
     }
 
-    /// <summary>
-    /// 치트키
-    /// </summary>
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            GameClear();
-        }
-
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            MaxBioHazard = 100000;
-            NowBioHazard -= 10000;
-        }
-    }
-
-
     IEnumerator StartingTimer(int time)
     {
         float t = 0;
-
-        /* GameOver Flag UI Set */
-        UIManager.Instance.FlagSet(true);
 
         /* Timer UI Set*/
         UIManager.Instance.StartTimerSet(true);
@@ -203,7 +200,10 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.StartTimerUpdate(Mathf.FloorToInt(0));
         UIManager.Instance.StartTimerSet(false);
 
-        
+        /* GameOver Main Timer UI Set */
+        UIManager.Instance.MainTimerSet(true);
+
+
         HumanManager.Instance.StartSpawn();
         SoundManager.Instance.StartMainBGM();
 
@@ -254,7 +254,10 @@ public class GameManager : MonoBehaviour
 
         if (levelData == null)
         {
+            // 엔딩부분, 일단 타이틀로 돌아감
             Debug.LogWarning("모든 레벨이 클리어됨. 다음 레벨이 없음.");
+            SceneManager.LoadScene(0);
+            
             return;
         }
 
@@ -284,9 +287,9 @@ public class GameManager : MonoBehaviour
         StartCoroutine(StartingCoroutine);
     }
 
-    public void GameStop()
+    public void GameStop(bool OnOff)
     {
-        if (Time.timeScale > 0f)
+        if (OnOff == true)
         {
             Time.timeScale = 0f;
             SoundManager.Instance.PauseMainBGM();
@@ -304,7 +307,6 @@ public class GameManager : MonoBehaviour
         InputManager.Instance.TouchDic.Clear();
 
         SoundManager.Instance.StopMainBGM();
-        SoundManager.Instance.StopGameOverBGM();
 
         if (StartingCoroutine != null)
         {
@@ -326,6 +328,7 @@ public class GameManager : MonoBehaviour
         GameClean();
 
         GameInIt();
+
     }
 
     public void GameClear()
@@ -335,6 +338,9 @@ public class GameManager : MonoBehaviour
         // 클리어 연출부
         UIManager.Instance.GameClear(true);
         LevelManager.Instance.NowLevel += 1;
+
+        // 저장
+        PlayerDataManager.Instance.UpdateSaveData();
     }
 
 
@@ -344,6 +350,8 @@ public class GameManager : MonoBehaviour
 
         UIManager.Instance.GameOver(true);
     }
+
+    
     #endregion
 
 

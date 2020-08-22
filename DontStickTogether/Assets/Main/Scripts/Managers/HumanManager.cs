@@ -314,7 +314,6 @@ public class HumanManager : MonoBehaviour
 
                     // 활성화된 오브젝트만 수를 센다.
                     ObjectCount += 1;
-                    UIManager.Instance.UpdateHumanCount(ObjectCount);
 
                     return;
                 }
@@ -345,6 +344,5 @@ public class HumanManager : MonoBehaviour
         }
 
         ObjectCount = 0;
-        UIManager.Instance.UpdateHumanCount(ObjectCount);
     }
 }
