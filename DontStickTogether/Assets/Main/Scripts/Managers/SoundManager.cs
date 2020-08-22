@@ -156,6 +156,23 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    public void PauseMainBGM()
+    {
+        if (MainAudio.clip == MainBGM
+            && MainAudio.isPlaying == true)
+        {
+            MainAudio.Pause();
+        }
+    }
+
+    public void UnPauseMainBGM()
+    {
+        if (MainAudio.clip == MainBGM)
+        {
+            MainAudio.UnPause();
+        }
+    }
+
     public void StopMainBGM()
     {
         if (MainAudio.clip == MainBGM

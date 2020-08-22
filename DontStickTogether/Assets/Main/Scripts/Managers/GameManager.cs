@@ -284,8 +284,25 @@ public class GameManager : MonoBehaviour
         StartCoroutine(StartingCoroutine);
     }
 
+    public void GameStop()
+    {
+        if (Time.timeScale > 0f)
+        {
+            Time.timeScale = 0f;
+            SoundManager.Instance.PauseMainBGM();
+        }
+        else
+        {
+            Time.timeScale = 1.0f;
+            SoundManager.Instance.UnPauseMainBGM();
+        }
+        
+    }
+
     public void GameClean()
     {
+        InputManager.Instance.TouchDic.Clear();
+
         SoundManager.Instance.StopMainBGM();
         SoundManager.Instance.StopGameOverBGM();
 

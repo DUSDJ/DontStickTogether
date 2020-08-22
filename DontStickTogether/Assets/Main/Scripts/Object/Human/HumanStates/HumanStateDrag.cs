@@ -7,16 +7,18 @@ using UnityEngine;
 public class HumanStateDrag : IState<Human>
 {
 
-    Human parent;
-    IEnumerator coroutine;
+    protected Human parent;
+    protected IEnumerator coroutine;
 
-    private bool IsDragging;
-    private Vector3 pointDragStart; // 드래그 이동거리 비례해서 뭔가 하고 싶을 때
-    private float dragTime;
+    protected bool IsDragging;
+    protected Vector3 pointDragStart; // 드래그 이동거리 비례해서 뭔가 하고 싶을 때
+    protected float dragTime;
 
-    private Transform trail;
+    protected Transform trail;
 
-    IEnumerator UpdateCoroutine()
+    protected List<Effect> effects = new List<Effect>();
+
+    public virtual IEnumerator UpdateCoroutine()
     {
         dragTime = 0f;
 
@@ -55,8 +57,6 @@ public class HumanStateDrag : IState<Human>
                 Vector3 direction = diffrence.normalized;
                 LookTarget(trail);
 
-
-                Debug.Log(dragTime);
                 if(InputManager.Instance.InputTest == true)
                 {
                     Vector2 MousePosition = Input.mousePosition;
@@ -66,8 +66,6 @@ public class HumanStateDrag : IState<Human>
                 else
                 {
                     Vector2 pos = InputManager.Instance.GetTouchPosition(parent.MyTouch);
-
-                    Debug.Log("Pos : " + pos);
 
                     parent.transform.position = pos;
                 }
@@ -88,7 +86,7 @@ public class HumanStateDrag : IState<Human>
 
     }
 
-    public void EnterState(Human t)
+    public virtual void EnterState(Human t)
     {
         parent = t;
         if (parent.gameObject.activeSelf == false) return;
@@ -100,7 +98,7 @@ public class HumanStateDrag : IState<Human>
         parent.StartCoroutine(coroutine);
     }
 
-    public void ExitState()
+    public virtual void ExitState()
     {
         if (coroutine != null) parent.StopCoroutine(coroutine);
 
@@ -130,5 +128,13 @@ public class HumanStateDrag : IState<Human>
 
         // distance에 비례해서 direction으로 이동 보간
         parent.transform.DOMove(endValue, 0.12f).SetEase(Ease.OutBounce);
+
+        // 현재 스테이트에 걸려있는 이펙트 제거
+        for (int i = 0; i < effects.Count; i++)
+        {
+            effects[i].Clean();
+        }
+
+        effects.Clear();
     }
 }
