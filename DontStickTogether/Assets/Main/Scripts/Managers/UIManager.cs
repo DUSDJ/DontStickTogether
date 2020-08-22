@@ -38,7 +38,6 @@ public class UIManager : MonoBehaviour
     public struct StructStartingObject
     {
         public GameObject TimerObject;
-        public Text TimerText;
     }
     public StructStartingObject StartingObject;
 
@@ -168,24 +167,9 @@ public class UIManager : MonoBehaviour
     {
         if (OnOff == true)
         {
-            // Starting Timer 등장 연출부
-            //
-
+            // Starting Timer 등장
             StartingObject.TimerObject.SetActive(true);
         }
-        else
-        {
-            // Starting Timer 소멸 연출부
-            //
-
-            StartingObject.TimerObject.SetActive(false);
-        }
-    }
-
-    public void StartTimerUpdate(int value)
-    {
-        
-        StartingObject.TimerText.text = string.Format("0{0}:00",value);
     }
 
     public void MainTimerSet(bool OnOff)

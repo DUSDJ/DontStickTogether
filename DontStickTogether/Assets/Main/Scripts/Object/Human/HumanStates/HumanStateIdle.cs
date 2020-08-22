@@ -18,13 +18,6 @@ public class HumanStateIdle : IState<Human>
         // Idle Animation
         foreach (AnimatorControllerParameter param in parent.anim.parameters)
         {
-            if (param.name == "Action")
-            {
-                parent.anim.ResetTrigger("Action");
-            }
-        }
-        foreach (AnimatorControllerParameter param in parent.anim.parameters)
-        {
             if (param.name == "Idle")
             {
                 parent.anim.SetTrigger("Idle");
@@ -54,7 +47,7 @@ public class HumanStateIdle : IState<Human>
         yield return null;
     }
 
-    public void EnterState(Human t)
+    public virtual void EnterState(Human t)
     {
         parent = t;
         if (parent.gameObject.activeSelf == false) return;
@@ -63,7 +56,7 @@ public class HumanStateIdle : IState<Human>
         parent.StartCoroutine(coroutine);
     }
 
-    public void ExitState()
+    public virtual void ExitState()
     {
         if (coroutine != null) parent.StopCoroutine(coroutine);
 

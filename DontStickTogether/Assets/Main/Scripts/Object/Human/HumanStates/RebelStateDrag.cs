@@ -44,7 +44,6 @@ public class RebelStateDrag : HumanStateDrag
                 {
                     // 효과음
 
-                    // 이펙트 : 임시로 느낌표...
                     //Effect_Question
                     Effect e = EffectManager.Instance.SetPool("Effect_Angry");
                     Vector3 Adder = new Vector3(0, 0.3f, 0);

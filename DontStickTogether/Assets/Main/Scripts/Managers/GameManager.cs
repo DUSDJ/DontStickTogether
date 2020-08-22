@@ -174,47 +174,31 @@ public class GameManager : MonoBehaviour
         GameInIt();
     }
 
-    IEnumerator StartingTimer(int time)
+    public void GameSetting()
     {
-        float t = 0;
-
-        /* Timer UI Set*/
-        UIManager.Instance.StartTimerSet(true);
-        UIManager.Instance.StartTimerUpdate(time);
-
-        while (t < time)
-        {
-            t += Time.deltaTime;
-
-            if(t >= 1)
-            {
-                t -= 1;
-                time -= 1;
-
-                UIManager.Instance.StartTimerUpdate(Mathf.FloorToInt(time));
-            }
-
-            yield return null;
-        }
-
-        UIManager.Instance.StartTimerUpdate(Mathf.FloorToInt(0));
-        UIManager.Instance.StartTimerSet(false);
-
         /* GameOver Main Timer UI Set */
         UIManager.Instance.MainTimerSet(true);
-
 
         HumanManager.Instance.StartSpawn();
         SoundManager.Instance.StartMainBGM();
 
-        
+
         if (MainCoroutine != null)
         {
-            StopCoroutine(MainCoroutine);            
+            StopCoroutine(MainCoroutine);
         }
         MainCoroutine = MainTimerCoroutine();
         StartCoroutine(MainCoroutine);
-        
+    }
+
+    IEnumerator StartingTimer()
+    {
+        /* Timer UI Set*/
+        UIManager.Instance.StartTimerSet(true);
+
+        // 애니메이션 콜백 받아서 GameSetting()
+
+        yield return null;        
     }
 
     IEnumerator MainTimerCoroutine()
@@ -283,7 +267,7 @@ public class GameManager : MonoBehaviour
         {
             StopCoroutine(StartingCoroutine);
         }
-        StartingCoroutine = StartingTimer(StartTime);
+        StartingCoroutine = StartingTimer();
         StartCoroutine(StartingCoroutine);
     }
 

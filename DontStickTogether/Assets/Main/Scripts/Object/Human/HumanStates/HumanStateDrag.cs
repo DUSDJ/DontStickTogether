@@ -102,6 +102,14 @@ public class HumanStateDrag : IState<Human>
     {
         if (coroutine != null) parent.StopCoroutine(coroutine);
 
+        foreach (AnimatorControllerParameter param in parent.anim.parameters)
+        {
+            if (param.name == "Action")
+            {
+                parent.anim.ResetTrigger("Action");
+            }
+        }
+
         IsDragging = false;
 
         // Effect : Trail 완료

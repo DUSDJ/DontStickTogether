@@ -29,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8843850746651897944}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8843850746790340354}
@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MoveSpeed: 0
-  RightIsFlipTrue: 0
+  RightIsFlipTrue: 1
   AttackWithAnimation: 0
   AttackCoolDown: 1
   AttackPoint: 1
@@ -60,6 +60,11 @@ MonoBehaviour:
   anim: {fileID: 0}
   circle: {fileID: 0}
   Target: {fileID: 0}
+  NumOfInsaneWalk: 2
+  RadiusOfInsaneWalk: 3
+  DuratoinOfInsaneWalk: 5
+  LeftDurationOfInsaneWalk: 0
+  PositionOfInsaneWalk: {x: 0, y: 0, z: 0}
   RebelTime: 0.1
   RebelDistance: 0.5
   AngryEffectDuration: 1.2
@@ -102,9 +107,9 @@ SpriteRenderer:
   m_SortingLayerID: 955710133
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: f055a91af7864e042b17f06b76de9286, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 015d09b27ed54e84fa8d094182a2180d, type: 3}
   m_Color: {r: 1, g: 0.53510433, b: 0, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1, y: 1}
@@ -139,7 +144,7 @@ Animator:
   m_GameObject: {fileID: 8843850746651897944}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 2f5ba1155f92e8647b1213169512ae5d, type: 2}
+  m_Controller: {fileID: 9100000, guid: 9acab8ebfc5d27b4da9d271396398fc4, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

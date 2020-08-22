@@ -41,7 +41,7 @@ public class Center : MonoBehaviour
 
     private SpriteRenderer spr;
     private Animator anim;
-    private BoxCollider2D box;
+    private CapsuleCollider2D capsule;
 
     #endregion
 
@@ -53,7 +53,7 @@ public class Center : MonoBehaviour
         /* Component Set */
         spr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
-        box = GetComponent<BoxCollider2D>();
+        capsule = GetComponent<CapsuleCollider2D>();
 
 
     }
@@ -80,6 +80,26 @@ public class Center : MonoBehaviour
             GameManager.Instance.AddHuman(h);
         }
 
+
+        // Fan은 Collector가 Arrive 상태일 때만 Center에 접촉
+        if (collision.CompareTag("Fan"))
+        {
+            Fan f = collision.GetComponent<Fan>();
+
+            // Drag 중이면 처리 안 함
+            if (f.NowState == f.HumanState.HumanStateDrag)
+            {
+                return;
+            }
+
+            // Collector 따라다니는 상태면 처리 안 함
+            if (f.IsTargetingCenter() == false)
+            {
+                return;
+            }
+
+            GameManager.Instance.AddHuman(f);
+        }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -100,25 +120,6 @@ public class Center : MonoBehaviour
                 GameManager.Instance.AddHuman(h);
             }
         }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        /* 만들고 보니까 Exit는 알 바가 아님... */
-        /*
-        if (collision.CompareTag("Human"))
-        {
-            Human h = collision.GetComponent<Human>();
-
-            // Drag 중일때만 처리?
-            if (h.NowState != h.HumanState.HumanStateDrag)
-            {
-                return;
-            }
-
-            GameManager.Instance.RemoveHuman(h);
-        }
-        */
     }
 
     #endregion

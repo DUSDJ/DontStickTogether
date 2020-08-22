@@ -77,6 +77,11 @@ public class InputManager : MonoBehaviour
             return;
         }
 
+        if(Time.timeScale == 0)
+        {
+            return;
+        }
+
         int i = 0;
         while(i < Input.touchCount)
         {

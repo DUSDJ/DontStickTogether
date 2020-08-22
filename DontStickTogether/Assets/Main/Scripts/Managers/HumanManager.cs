@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -54,6 +55,7 @@ public class HumanManager : MonoBehaviour
     public int PoolMaxCount;
 
     private int ObjectCount = 0;
+    private int ObjectCountForSortingOrder = 0;
 
     public Transform[] Buildings;
 
@@ -128,6 +130,9 @@ public class HumanManager : MonoBehaviour
 
     }
 
+
+    
+
     /// <summary>
     /// 컨셉3 : CSV 테이블 기반, 유닛별 Rate 생성기
     /// </summary>
@@ -139,33 +144,46 @@ public class HumanManager : MonoBehaviour
         int SpawnPerSecond = int.Parse(table["SpawnPerSecond"].ToString());
         float SpawnTime = 1.0f;
 
-        Debug.Log("SpawnPerSecond : " + SpawnTime);
-
-        // Rate 0 ~ 10
-        
+        // 미리 Rate에 맞게 전부 리스트를 뽑느다.
         int NormalRate = int.Parse(table["NormalRate"].ToString());
         int CollectorRate = int.Parse(table["CollectorRate"].ToString());
         int InsaneRate = int.Parse(table["InsaneRate"].ToString());
         int RebelRate = int.Parse(table["RebelRate"].ToString());
         int BomberRate = int.Parse(table["BomberRate"].ToString());
-        
 
-        /*
-        int adder = 0;
-        Vector2Int NormalRate = new Vector2Int(adder, (int.Parse(table["NormalRate"].ToString()) + adder));
-        adder += NormalRate.y;
+        List<string> unitBox = new List<string>();
 
-        Vector2Int CollectorRate = new Vector2Int(adder, (int.Parse(table["CollectorRate"].ToString()) + adder));
-        adder += CollectorRate.y;
+        int num = (int)(NormalRate * PoolMaxCount * 0.1);                
+        for (int i = 0; i < num; i++)
+        {
+            unitBox.Add("Normal_" + table["Chapter"].ToString());
+        }
 
-        Vector2Int InsaneRate = new Vector2Int(adder, (int.Parse(table["InsaneRate"].ToString()) + adder));
-        adder += InsaneRate.y;
+        num = (int)(CollectorRate * PoolMaxCount * 0.1);
+        for (int i = 0; i < num; i++)
+        {
+            unitBox.Add("Collector");
+        }
 
-        Vector2Int RebelRate = new Vector2Int(adder, (int.Parse(table["RebelRate"].ToString()) + adder));
-        adder += RebelRate.y;
+        num = (int)(InsaneRate * PoolMaxCount * 0.1);
+        for (int i = 0; i < num; i++)
+        {
+            unitBox.Add("Insane");
+        }
 
-        Vector2Int BomberRate = new Vector2Int(adder, (int.Parse(table["BomberRate"].ToString()) + adder));
-        */
+        num = (int)(RebelRate * PoolMaxCount * 0.1);
+        for (int i = 0; i < num; i++)
+        {
+            unitBox.Add("Rebel");
+        }
+
+        num = (int)(BomberRate * PoolMaxCount * 0.1);
+        for (int i = 0; i < num; i++)
+        {
+            unitBox.Add("Bomber");
+        }
+
+        Debug.Log("UnitBox Max : " + unitBox.Count);
 
         while (true)
         {
@@ -174,39 +192,30 @@ public class HumanManager : MonoBehaviour
                 // N 마리 생성
                 for (int i = 0; i < SpawnPerSecond; i++)
                 {
-                    int dice = UnityEngine.Random.Range(0, 10); // 0 ~ 9                    
-                    string key = "Bug";
+                    if(unitBox.Count <= 0)
+                    {
+                        yield break;
+                    }
+
+                    int index = UnityEngine.Random.Range(0, unitBox.Count);                    
+                    string key = unitBox[index];
+                    unitBox.RemoveAt(index);
 
                     // 이동패턴
                     StringBuilder Pattern = new StringBuilder();
                     Pattern.Append("Normal");
-
-                    if(dice < NormalRate && NormalRate != 0)
+                    if (key.StartsWith("Normal"))
                     {
-                        // 노말!
-                        key = "Normal_" + table["Chapter"].ToString();
                         Pattern.Clear();
                         Pattern.Append(table["Pattern"].ToString());
                     }
-                    else if (dice < CollectorRate + NormalRate && CollectorRate != 0)
-                    {
-                        key = "Collector";
-                    }
-                    else if (dice < InsaneRate + CollectorRate + NormalRate && InsaneRate != 0)
-                    {
-                        key = "Insane";
-                    }
-                    else if (dice < RebelRate + InsaneRate + CollectorRate + NormalRate && RebelRate != 0)
-                    {
-                        key = "Rebel";
-                    }
-                    else if (BomberRate != 0)
-                    {
-                        key = "Bomber";
-                    }
 
-                    Debug.Log("Dice : " + dice);
-                    Debug.Log(key);
+                    Debug.Log("=====UnitBox=====");
+                    Debug.Log("UnitPattern : " + Pattern.ToString());
+                    Debug.Log("UnitBox["+ index + "]: " + key);
+                    Debug.Log("UnitBoxCount : " + unitBox.Count);
+                    Debug.Log("UnitBoxKey : " + key);
+                    Debug.Log("=================");
 
                     // 능력치, 위치 설정
                     float Speed = float.Parse(table["Speed"].ToString()); // 스피드                
@@ -248,10 +257,14 @@ public class HumanManager : MonoBehaviour
     #region Pooling
     public bool IncreasePool(string key, int num)
     {
-        // 활성화된 오브젝트가 PoolMaxCount 이상이면 늘리지 않는다.
-        if (ObjectCount >= PoolMaxCount)
+        // Fan은 오브젝트 한계 영향 안 받음.
+        if (key.StartsWith("Fan") == false)
         {
-            return false;
+            // 활성화된 오브젝트가 PoolMaxCount 이상이면 늘리지 않는다.
+            if (ObjectCount >= PoolMaxCount)
+            {
+                return false;
+            }
         }
 
         Debug.Log("IncreasePool() : " + gameObject.name);
@@ -301,6 +314,7 @@ public class HumanManager : MonoBehaviour
 
                     // 활성화된 오브젝트만 수를 센다.
                     ObjectCount += 1;
+                    ObjectCountForSortingOrder += 1;
 
                     return;
                 }
@@ -309,6 +323,45 @@ public class HumanManager : MonoBehaviour
             if (IncreasePool(key, 1) == false)
             {
                 return;
+            }
+        }
+    }
+
+    public Fan SetPoolFan(Collector collector)
+    {
+        Dictionary<string, object> table = LevelManager.Instance.GetLevelCSV();
+        string key = "Fan";
+
+        if (DataDic.ContainsKey(key) == false)
+        {
+            Debug.LogError("없는 이름으로 Human 생성 : " + key);
+            return null;
+        }
+
+        while (true)
+        {
+            for (int i = 0; i < List[key].Count; i++)
+            {
+                Human h = List[key][i].GetComponent<Human>();
+
+                if (h.gameObject.activeSelf == false)
+                {
+                    h.gameObject.SetActive(true);
+
+                    h.InitHuman(collector.GetSummonRadius(), collector.MoveSpeed, collector.AttackPoint, "Normal");
+
+                    // sorting order
+                    h.GetComponent<SpriteRenderer>().sortingOrder = ObjectCountForSortingOrder;
+                    ObjectCountForSortingOrder += 1;
+
+                    return (Fan)h;
+                }
+            }
+
+            // false면 에러임
+            if (IncreasePool(key, 1) == false)
+            {
+                return null;
             }
         }
     }

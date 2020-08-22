@@ -14,4 +14,9 @@ public class AnimationCallback : MonoBehaviour
         SendMessage(msg);
     }
 
+    public void AnimEndGameStart()
+    {
+        GameManager.Instance.GameSetting();
+        gameObject.SetActive(false);
+    }
 }

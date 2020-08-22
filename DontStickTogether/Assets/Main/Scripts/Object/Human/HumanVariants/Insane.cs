@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class Insane : Human
 {
-    
-    public override void Awake()
+    public override void InitHuman(Vector3 position, float speed, float attackPoint, string pattern)
     {
-        base.Awake();
-
-        HumanState.HumanStateWalk = new HumanStateWalk();
+        base.InitHuman(position, speed, attackPoint, pattern);
+        
+        PaternRandom = true;
     }
 }

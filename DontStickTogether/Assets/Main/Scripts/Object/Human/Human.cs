@@ -88,6 +88,19 @@ public class Human : MonoBehaviour, IPointerUpHandler, IPointerDownHandler, ITou
     #endregion
 
 
+    #region coroutines
+    [Header("변칙움직임 몇 번 할 것인지")]
+    public float NumOfInsaneWalk = 2;
+
+    [Header("변칙움직임 반경")]
+    public float RadiusOfInsaneWalk = 3.0f;
+
+    [Header("변칙움직임 지속시간")]
+    public float DuratoinOfInsaneWalk = 5.0f;
+    [HideInInspector]public float LeftDurationOfInsaneWalk;
+    [HideInInspector]public Vector3 PositionOfInsaneWalk;
+    #endregion
+
 
     #region Set Human
 
