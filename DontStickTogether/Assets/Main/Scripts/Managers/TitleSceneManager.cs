@@ -2,11 +2,37 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class TitleSceneManager : MonoBehaviour
 {
     public GameObject PopupRanking;
     public GameObject PopupCredits;
+
+
+    #region SingleTon
+    /* SingleTon */
+    private static TitleSceneManager instance;
+    public static TitleSceneManager Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = GameObject.FindObjectOfType(typeof(TitleSceneManager)) as TitleSceneManager;
+                if (!instance)
+                {
+                    GameObject container = new GameObject();
+                    container.name = "TitleSceneManager";
+                    instance = container.AddComponent(typeof(TitleSceneManager)) as TitleSceneManager;
+                }
+            }
+
+            return instance;
+        }
+    }
+
+    #endregion
 
     public void BtnStart()
     {

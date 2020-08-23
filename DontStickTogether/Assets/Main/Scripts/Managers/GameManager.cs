@@ -32,8 +32,9 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region Values
-    
-    
+
+    [Header("Stage3만진행")]
+    public bool StartStage3 = false;
 
     [Header("시작 대기 시간")]
     public int StartTime;
@@ -165,6 +166,11 @@ public class GameManager : MonoBehaviour
         {
             PlayerDataManager.Instance.LoadDataOnlySoundApply();
             LevelManager.Instance.NowLevel = 1;
+        }
+
+        if(StartStage3 == true && LevelManager.Instance.NowLevel < 11)
+        {
+            LevelManager.Instance.NowLevel = 11;
         }
 
         // 초기값 혹은 로드값 저장
