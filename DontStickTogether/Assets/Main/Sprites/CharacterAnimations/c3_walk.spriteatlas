@@ -1,0 +1,172 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: c3_walk
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 1024
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 0
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 23c4c84ad55cccc40a66d02a8e44a5df, type: 3}
+    totalSpriteSurfaceArea: 3394560
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 37a80d00eda2d3e43b8ee0c453e4e676, type: 3}
+  - {fileID: 21300000, guid: 9ea1e7608e955b143a903a6a466773b9, type: 3}
+  - {fileID: 21300000, guid: 803867c0865838346b0d8597693b8a6b, type: 3}
+  - {fileID: 21300000, guid: c2ade4e07a46b77459af71127fbc5e3b, type: 3}
+  - {fileID: 21300000, guid: 27482301a26246948aac4c31353ac49b, type: 3}
+  - {fileID: 21300000, guid: 95eab80160e9fa944a9d7716015ebc47, type: 3}
+  - {fileID: 21300000, guid: aa6a34114a4327342ad96e7c883ace23, type: 3}
+  - {fileID: 21300000, guid: dedb2c21a7d141b4ba21a5bec72670c0, type: 3}
+  - {fileID: 21300000, guid: 662b136116a389441846dbd80bf71e4c, type: 3}
+  - {fileID: 21300000, guid: 3624a7a12c2feb34c94a3344b5beec52, type: 3}
+  - {fileID: 21300000, guid: c9bc95621697b134ca0cb2a261361ed3, type: 3}
+  - {fileID: 21300000, guid: d1791ec201496cb48ba72db012264221, type: 3}
+  - {fileID: 21300000, guid: 9c30c8939e1698343b5308392cbb693d, type: 3}
+  - {fileID: 21300000, guid: 661109e3046fbb0459a6c0a4da57c7b9, type: 3}
+  - {fileID: 21300000, guid: aff71ee39def0fa4c8ea03def001be5b, type: 3}
+  - {fileID: 21300000, guid: 5c2fb0f4ac4ead54b93206614967507f, type: 3}
+  - {fileID: 21300000, guid: 65b50305e4a7fb5418e996f540a8613e, type: 3}
+  - {fileID: 21300000, guid: df7e4d150774ba944a7409364ec8f443, type: 3}
+  - {fileID: 21300000, guid: e73e1d659cceac244a30b283ed82b272, type: 3}
+  - {fileID: 21300000, guid: 103667751f2ac704caea51fceb0aff08, type: 3}
+  - {fileID: 21300000, guid: 88182885679ae3c4db80106efc9880bc, type: 3}
+  - {fileID: 21300000, guid: 79e4fb2654fb45d47962024b77f43459, type: 3}
+  - {fileID: 21300000, guid: 69d5d446510a5d64ca97d903c125f93b, type: 3}
+  - {fileID: 21300000, guid: 08049d5636adbbb4fb5c552ce758173f, type: 3}
+  - {fileID: 21300000, guid: 818ff266e2f57054e874f587821ee204, type: 3}
+  - {fileID: 21300000, guid: 568669763dec10b46b6f740d9fc1b269, type: 3}
+  - {fileID: 21300000, guid: 04758567548c4534dae137b2e907b336, type: 3}
+  - {fileID: 21300000, guid: b311d6776823492448efcafc36ef9f34, type: 3}
+  - {fileID: 21300000, guid: c9f204d7b87d24e4084e37f7301f8ed8, type: 3}
+  - {fileID: 21300000, guid: 67710108808f4fd48946b770c4d3af8e, type: 3}
+  - {fileID: 21300000, guid: d63eae7804a1aa0408379236c0ae95c2, type: 3}
+  - {fileID: 21300000, guid: fa2f4788166578d42b1bcffa0dfcef77, type: 3}
+  - {fileID: 21300000, guid: 63951b98cc7cd4b4f8d4cd5fffe6b6d7, type: 3}
+  - {fileID: 21300000, guid: 1f635d59b3697894a8b65cae1f38d285, type: 3}
+  - {fileID: 21300000, guid: 402421696a12d5042970382de125a144, type: 3}
+  - {fileID: 21300000, guid: 889c6f79e9d5a6549a489039fdb6110e, type: 3}
+  - {fileID: 21300000, guid: 9198b789cf881d045b158b6fd2cfe49d, type: 3}
+  - {fileID: 21300000, guid: d9900ad902fa7d94faf20afc9d31c649, type: 3}
+  - {fileID: 21300000, guid: fb60840a406a3174d91172e3d2337ff1, type: 3}
+  - {fileID: 21300000, guid: 06af5a3a06d024644b0490df30fb7d5e, type: 3}
+  - {fileID: 21300000, guid: bc3abf6a45adb5e4496077c799ae32a9, type: 3}
+  - {fileID: 21300000, guid: 23db67aa4ba8de646ae36c06b242ba05, type: 3}
+  - {fileID: 21300000, guid: 54f54c0b3b2ce0e45bc1f6c0e043bcfd, type: 3}
+  - {fileID: 21300000, guid: 75e1d12c0160edd46b22902d72415cde, type: 3}
+  - {fileID: 21300000, guid: 1985f42cb6f7a6c44bcab443c6323bda, type: 3}
+  - {fileID: 21300000, guid: 74ab192c75a3a3d4083a53282c171272, type: 3}
+  - {fileID: 21300000, guid: e26e3c3c6e61a184c8f77b2b711e82a1, type: 3}
+  - {fileID: 21300000, guid: bfd69d4c2c7763943b914e058253906d, type: 3}
+  - {fileID: 21300000, guid: 1f49dc0d029b4ce40ad25629a9838498, type: 3}
+  - {fileID: 21300000, guid: 056e5b1d4fbe8964397c5e40aab124e3, type: 3}
+  - {fileID: 21300000, guid: 0fd7138dd4cf5084db106a2cee55a0da, type: 3}
+  - {fileID: 21300000, guid: 24bc91cddf76be54487b8296d748f338, type: 3}
+  - {fileID: 21300000, guid: b7d341fdfd7847b4ca00848afd66cbca, type: 3}
+  - {fileID: 21300000, guid: 7454568ef53298245bc46182cbdca95b, type: 3}
+  - {fileID: 21300000, guid: 9c56cece0c4de0e4382af750ed0bf949, type: 3}
+  - {fileID: 21300000, guid: dc5f3ede057c13848b7d3f880d7479b0, type: 3}
+  - {fileID: 21300000, guid: e8d0c45f3ea50f749b4db7afaf4b8eab, type: 3}
+  - {fileID: 21300000, guid: 2fe3409f7a69158419fdd9b7b8b510c1, type: 3}
+  - {fileID: 21300000, guid: 49287eaf60a2f904fb595e8eab837563, type: 3}
+  - {fileID: 21300000, guid: fb350cefc2301fc47a8c65be374e5522, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - c3walk_23
+  - c3walk_47
+  - c3walk_41
+  - c3walk_22
+  - c3walk_26
+  - c3walk_07
+  - c3walk_02
+  - c3walk_05
+  - c3walk_28
+  - c3walk_59
+  - c3walk_08
+  - c3walk_06
+  - c3walk_44
+  - c3walk_56
+  - c3walk_40
+  - c3walk_16
+  - c3walk_04
+  - c3walk_27
+  - c3walk_25
+  - c3walk_33
+  - c3walk_20
+  - c3walk_09
+  - c3walk_37
+  - c3walk_36
+  - c3walk_15
+  - c3walk_19
+  - c3walk_10
+  - c3walk_52
+  - c3walk_11
+  - c3walk_58
+  - c3walk_49
+  - c3walk_55
+  - c3walk_38
+  - c3walk_46
+  - c3walk_01
+  - c3walk_50
+  - c3walk_00
+  - c3walk_32
+  - c3walk_13
+  - c3walk_18
+  - c3walk_21
+  - c3walk_53
+  - c3walk_35
+  - c3walk_03
+  - c3walk_12
+  - c3walk_30
+  - c3walk_14
+  - c3walk_29
+  - c3walk_43
+  - c3walk_45
+  - c3walk_34
+  - c3walk_42
+  - c3walk_51
+  - c3walk_48
+  - c3walk_54
+  - c3walk_57
+  - c3walk_39
+  - c3walk_31
+  - c3walk_17
+  - c3walk_24
+  m_Tag: c3_walk
+  m_IsVariant: 0

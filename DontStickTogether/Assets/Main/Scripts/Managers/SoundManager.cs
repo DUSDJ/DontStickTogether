@@ -184,7 +184,7 @@ public class SoundManager : MonoBehaviour
     }
 
     
-    public void StartGameOverBGM()
+    public void StartGameOverEffect()
     {
         StopMainBGM();
         
@@ -194,12 +194,20 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    public void StartGameClearEffect()
+    {
+        StopMainBGM();
+
+        if (MainAudio.isPlaying == false)
+        {
+            SetPool("StageClear");
+        }
+    }
+
 
     #region Pooling
     public bool IncreasePool(string key, int num)
     {
-        Debug.Log("IncreasePool() : " + gameObject.name);
-
         for (int i = 0; i < num; i++)
         {
             if (SoundObjectCount >= SoundObjectMaxCount)

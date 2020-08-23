@@ -183,8 +183,6 @@ public class HumanManager : MonoBehaviour
             unitBox.Add("Bomber");
         }
 
-        Debug.Log("UnitBox Max : " + unitBox.Count);
-
         while (true)
         {
             if(t >= SpawnTime)
@@ -209,13 +207,6 @@ public class HumanManager : MonoBehaviour
                         Pattern.Clear();
                         Pattern.Append(table["Pattern"].ToString());
                     }
-
-                    Debug.Log("=====UnitBox=====");
-                    Debug.Log("UnitPattern : " + Pattern.ToString());
-                    Debug.Log("UnitBox["+ index + "]: " + key);
-                    Debug.Log("UnitBoxCount : " + unitBox.Count);
-                    Debug.Log("UnitBoxKey : " + key);
-                    Debug.Log("=================");
 
                     // 능력치, 위치 설정
                     float Speed = float.Parse(table["Speed"].ToString()); // 스피드                
@@ -266,8 +257,6 @@ public class HumanManager : MonoBehaviour
                 return false;
             }
         }
-
-        Debug.Log("IncreasePool() : " + gameObject.name);
 
         for (int i = 0; i < num; i++)
         {

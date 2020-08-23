@@ -239,7 +239,7 @@ public class GameManager : MonoBehaviour
         if (levelData == null)
         {
             // 엔딩부분, 일단 타이틀로 돌아감
-            Debug.LogWarning("모든 레벨이 클리어됨. 다음 레벨이 없음.");
+            //Debug.LogWarning("모든 레벨이 클리어됨. 다음 레벨이 없음.");
             SceneManager.LoadScene(0);
             
             return;

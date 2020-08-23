@@ -5,6 +5,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Firebase;
+using Firebase.Database;
+using Firebase.Unity.Editor;
 
 public class UIManager : MonoBehaviour
 {
@@ -103,6 +106,31 @@ public class UIManager : MonoBehaviour
     #endregion
 
 
+    #region FireBase
+
+    DatabaseReference reference;
+
+    [System.Serializable]
+    public class User
+    {
+        public string UserID;
+        public int Level;
+        public int Chapter;
+        public int Stage;
+    }
+
+    public void AddData()
+    {
+        User user = new User();
+        user.UserID = SystemInfo.deviceUniqueIdentifier; // USER ID 임시로 디바이스 고유 ID 사용
+        
+
+    }
+
+    #endregion
+
+
+
 
     private void Awake()
     {
@@ -123,12 +151,47 @@ public class UIManager : MonoBehaviour
         GameOverObject.SetActive(false);
     }
 
-    
+    private void Start()
+    {
+        #region FireBase init
+
+        Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task => {
+            var dependencyStatus = task.Result;
+            if (dependencyStatus == Firebase.DependencyStatus.Available)
+            {
+                // Create and hold a reference to your FirebaseApp,
+                // where app is a Firebase.FirebaseApp property of your application class.
+                //   app = Firebase.FirebaseApp.DefaultInstance;
+
+                // Set a flag here to indicate whether Firebase is ready to use by your app.
+
+                Debug.Log("Firebase App Init Success");
+
+                // Set up the Editor before calling into the realtime database
+                FirebaseApp.DefaultInstance.SetEditorDatabaseUrl("https://sephiatone-1dd3f.firebaseio.com/");
+
+                // Get the root reference location of the database
+                reference = FirebaseDatabase.DefaultInstance.RootReference;
+            }
+            else
+            {
+                UnityEngine.Debug.LogError(System.String.Format(
+                  "Could not resolve all Firebase dependencies: {0}", dependencyStatus));
+                // Firebase Unity SDK is not safe to use here.
+            }
+        });
+
+        #endregion
+
+    }
+
 
     public void GameClear(bool OnOff)
     {
         if (OnOff == true)
         {
+            SoundManager.Instance.StartGameClearEffect();
+
             PlayerCanvas.SetActive(false);
             GameClearObject.SetActive(true);
         }
@@ -146,7 +209,7 @@ public class UIManager : MonoBehaviour
         {
             //  등장 연출부
 
-            SoundManager.Instance.StartGameOverBGM();
+            SoundManager.Instance.StartGameOverEffect();
 
             PlayerCanvas.SetActive(false);
             GameOverObject.SetActive(true);

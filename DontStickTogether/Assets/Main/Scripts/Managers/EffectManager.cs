@@ -91,8 +91,6 @@ public class EffectManager : MonoBehaviour
 
     public void IncreaseTrailPool(int num)
     {
-        Debug.Log("IncreasePool() : " + gameObject.name);
-
         for (int i = 0; i < num; i++)
         {
             GameObject go = Instantiate(TrailEffect);
@@ -128,8 +126,6 @@ public class EffectManager : MonoBehaviour
 
     public void IncreaseClickPool(int num)
     {
-        Debug.Log("IncreasePool() : " + gameObject.name);
-
         for (int i = 0; i < num; i++)
         {
             GameObject go = Instantiate(ClickEffect);
@@ -168,8 +164,6 @@ public class EffectManager : MonoBehaviour
     #region Pooling
     public void IncreasePool(string key, int num)
     {
-        Debug.Log("IncreasePool() : " + gameObject.name);
-
         for (int i = 0; i < num; i++)
         {
             GameObject go = Instantiate(DataDic[key]);
@@ -184,8 +178,7 @@ public class EffectManager : MonoBehaviour
     {
         if (DataDic.ContainsKey(key) == false)
         {
-            Debug.LogWarning("없는 이름으로 Effect 생성 : " + key);
-            return;
+           return;
         }
 
         while (true)
@@ -218,7 +211,6 @@ public class EffectManager : MonoBehaviour
     {
         if (DataDic.ContainsKey(msg) == false)
         {
-            Debug.LogWarning("없는 이름으로 Effect 생성 : " + msg);
             return;
         }
 
@@ -251,7 +243,7 @@ public class EffectManager : MonoBehaviour
     {
         if (DataDic.ContainsKey(msg) == false)
         {
-            Debug.LogWarning("없는 이름으로 Effect 생성 : " + msg);
+            //Debug.LogWarning("없는 이름으로 Effect 생성 : " + msg);
             return null;
         }
 
