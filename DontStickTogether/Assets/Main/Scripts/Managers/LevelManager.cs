@@ -64,6 +64,11 @@ public class LevelManager : MonoBehaviour
 
         #endregion
 
+        if(NowLevel < 1)
+        {
+            NowLevel = 1;
+        }
+
 
         /* Level Data CSV Init */
         LevelTable = CSVReader.Read("LevelCSV/LevelSheet");
@@ -147,7 +152,12 @@ public class LevelManager : MonoBehaviour
         // 레벨 초과
         if (NowLevel > LevelTable.Count)
         {
-            return null;
+            NowLevel = 1;
+        }
+
+        if(NowLevel < 1)
+        {
+            NowLevel = 1;
         }
 
         UIManager.Instance.UpdateChapter(int.Parse(LevelTable[NowLevel - 1]["Chapter"].ToString()));

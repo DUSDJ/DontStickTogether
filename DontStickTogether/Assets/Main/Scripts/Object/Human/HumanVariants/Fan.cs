@@ -27,6 +27,9 @@ public class Fan : Human
 
         //FanStateIdle
         //FanStateWalk
+        HumanState.HumanStateIdle = new FanStateIdle();
+        HumanState.HumanStateWalk = new FanStateWalk();
+        
 
     }
 
@@ -43,8 +46,11 @@ public class Fan : Human
         {
             return true;
         }
-
-        return false;
+        else
+        {
+            return false;
+        }
+        
     }
 
     public float SearchAndGetTimeFromCollector()

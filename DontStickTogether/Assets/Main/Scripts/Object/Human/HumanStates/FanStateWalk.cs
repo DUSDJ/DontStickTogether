@@ -4,10 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 
-public class FanStatewalk : HumanStateWalk
+public class FanStateWalk : HumanStateWalk
 {
     Fan fanParent;
-    Human parent;
     IEnumerator coroutine;
 
     List<Effect> effects = new List<Effect>();
@@ -47,7 +46,7 @@ public class FanStatewalk : HumanStateWalk
                 if (effects.Count == 0)
                 {
                     //Effect_MusicNote
-                    Effect e = EffectManager.Instance.SetPool("Effect_MusicNote");
+                    Effect e = EffectManager.Instance.SetPool("Effect_Heart");
                     Vector3 Adder = new Vector3(0, 0.3f, 0);
                     e.SetEffect(parent.transform, Adder, 100.0f);
                     effects.Add(e);

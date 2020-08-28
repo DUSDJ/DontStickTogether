@@ -65,7 +65,6 @@ public class Collector : Human
             return;
         }
 
-        f.MyCollector = this;
         FanList.Add(f);
     }
 

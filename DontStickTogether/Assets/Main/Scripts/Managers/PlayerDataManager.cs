@@ -4,9 +4,6 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
-using Firebase;
-using Firebase.Database;
-using Firebase.Unity.Editor;
 
 public class PlayerDataManager : MonoBehaviour
 {
@@ -61,38 +58,7 @@ public class PlayerDataManager : MonoBehaviour
     #endregion
 
 
-    #region FireBase
-
-    DatabaseReference reference;
-
-    [System.Serializable]
-    public class User
-    {
-        public string UserID;
-        public int Level;
-        public int Chapter;
-        public int Stage;
-
-        public override string ToString()
-        {
-            return string.Format("ID:{0}, Level:{1}, Chapter:{2}, Stage:{3}", UserID, Level, Chapter, Stage);
-        }
-    }
-
-    public void FirebaseAddData()
-    {
-        User user = new User();
-        user.UserID = SystemInfo.deviceUniqueIdentifier; // USER ID 임시로 디바이스 고유 ID 사용
-        user.Level = LevelManager.Instance.NowLevel;
-        user.Chapter = int.Parse(LevelManager.Instance.GetLevelCSV()["Chapter"].ToString());
-        user.Stage = int.Parse(LevelManager.Instance.GetLevelCSV()["Stage"].ToString());
-
-        string json = JsonUtility.ToJson(user);
-        reference.Child("Users").Child(user.Level.ToString()).SetRawJsonValueAsync(json);
-    }
-
-    #endregion
-
+    
 
     private void Awake()
     {
@@ -122,48 +88,26 @@ public class PlayerDataManager : MonoBehaviour
         SceneManager.sceneLoaded += LevelLoadAction;
 
 
-        #region FireBase init
-
-        Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task => {
-            var dependencyStatus = task.Result;
-            if (dependencyStatus == Firebase.DependencyStatus.Available)
-            {
-                // Create and hold a reference to your FirebaseApp,
-                // where app is a Firebase.FirebaseApp property of your application class.
-                //   app = Firebase.FirebaseApp.DefaultInstance;
-
-                // Set a flag here to indicate whether Firebase is ready to use by your app.
-
-                Debug.Log("Firebase App Init Success");
-
-                // Set up the Editor before calling into the realtime database
-                FirebaseApp.DefaultInstance.SetEditorDatabaseUrl("https://dontsticktogether.firebaseio.com/");
-
-                // Get the root reference location of the database
-                reference = FirebaseDatabase.DefaultInstance.RootReference;
-            }
-            else
-            {
-                UnityEngine.Debug.LogError(System.String.Format(
-                  "Could not resolve all Firebase dependencies: {0}", dependencyStatus));
-                // Firebase Unity SDK is not safe to use here.
-            }
-        });
-
-        #endregion
     }
 
     private void Start()
     {
-        
-
-
        
     }
 
     public void LevelLoadAction(Scene scene, LoadSceneMode mode)
     {
         LoadPlayerDataFromJson();
+    }
+
+
+    public void ResetData()
+    {
+        LevelManager.Instance.NowLevel = 1;
+        SavePD.Level = 1;
+        LoadPD.Level = 1;
+
+        SaveData();
     }
 
 
@@ -177,9 +121,9 @@ public class PlayerDataManager : MonoBehaviour
         if(LoadPD.Level <= LevelManager.Instance.NowLevel)
         {
             SavePD.Level = LevelManager.Instance.NowLevel;
-        }
 
-        SaveData();
+            SaveData();
+        }
     }
 
     public void UpdateVolumeData()
@@ -201,9 +145,6 @@ public class PlayerDataManager : MonoBehaviour
     public void SaveData()
     {
         string jsonData = JsonUtility.ToJson(SavePD, true);
-
-        // Firebase
-        FirebaseAddData();
 
         // 세이브 경로
         string mobilePath = Path.Combine(Application.persistentDataPath, "DSTPlayerData.json");

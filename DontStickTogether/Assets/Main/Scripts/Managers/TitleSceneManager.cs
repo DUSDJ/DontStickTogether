@@ -52,6 +52,8 @@ public class TitleSceneManager : MonoBehaviour
 
     public void BtnRanking(bool OnOff)
     {
+        /* Google LeaderBoard */
+
         if(OnOff == true)
         {
             PopupRanking.SetActive(true);

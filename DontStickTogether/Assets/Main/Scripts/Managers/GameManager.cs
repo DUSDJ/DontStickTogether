@@ -94,6 +94,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private bool ClearAllStage = false;
+
     #endregion
 
 
@@ -132,6 +134,7 @@ public class GameManager : MonoBehaviour
             UIManager.Instance.UpdateCheatInvincible(false);
         }
     }
+
     #endregion
 
     public Transform Center;
@@ -156,15 +159,14 @@ public class GameManager : MonoBehaviour
     
     private void Start()
     {
+        ClearAllStage = false;
+
         UIManager.Instance.GameClear(false);
 
-        if (PlayerDataManager.Instance.WillYouLoadData == true)
+        PlayerDataManager.Instance.LoadDataApply();
+
+        if (PlayerDataManager.Instance.WillYouLoadData == false)
         {
-            PlayerDataManager.Instance.LoadDataApply();            
-        }
-        else
-        {
-            PlayerDataManager.Instance.LoadDataOnlySoundApply();
             LevelManager.Instance.NowLevel = 1;
         }
 
@@ -233,9 +235,16 @@ public class GameManager : MonoBehaviour
 
     #region GameState Management
 
+   
+
     public void GameInIt()
     {
-        
+        if(ClearAllStage == true)
+        {
+            SceneManager.LoadScene(0);
+            return;
+        }
+
         UIManager.Instance.GameClear(false);
 
         NowBioHazard = 0;
@@ -244,10 +253,7 @@ public class GameManager : MonoBehaviour
 
         if (levelData == null)
         {
-            // 엔딩부분, 일단 타이틀로 돌아감
-            //Debug.LogWarning("모든 레벨이 클리어됨. 다음 레벨이 없음.");
             SceneManager.LoadScene(0);
-            
             return;
         }
 
@@ -329,8 +335,16 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.GameClear(true);
         LevelManager.Instance.NowLevel += 1;
 
-        // 저장
-        PlayerDataManager.Instance.UpdateSaveData();
+        // 저장 및 엔딩 검사        
+        if (LevelManager.Instance.NowLevel > 15)
+        {
+            ClearAllStage = true;
+            PlayerDataManager.Instance.ResetData();
+        }
+        else
+        {
+            PlayerDataManager.Instance.UpdateSaveData();
+        }
     }
 
 

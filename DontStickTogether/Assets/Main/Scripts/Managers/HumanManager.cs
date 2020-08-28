@@ -331,12 +331,12 @@ public class HumanManager : MonoBehaviour
         {
             for (int i = 0; i < List[key].Count; i++)
             {
-                Human h = List[key][i].GetComponent<Human>();
+                Fan h = List[key][i].GetComponent<Fan>();
 
                 if (h.gameObject.activeSelf == false)
                 {
                     h.gameObject.SetActive(true);
-
+                    h.MyCollector = collector;
                     h.InitHuman(collector.GetSummonRadius(), collector.MoveSpeed, collector.AttackPoint, "Normal");
 
                     // sorting order

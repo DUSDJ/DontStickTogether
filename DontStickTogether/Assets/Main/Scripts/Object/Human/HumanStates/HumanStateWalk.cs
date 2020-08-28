@@ -6,7 +6,7 @@ using UnityEngine;
 public class HumanStateWalk : IState<Human>
 {
 
-    Human parent;
+    protected Human parent;
     IEnumerator coroutine;
 
     List<Effect> effects = new List<Effect>();
